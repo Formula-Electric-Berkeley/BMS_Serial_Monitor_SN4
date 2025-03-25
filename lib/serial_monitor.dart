@@ -7,7 +7,6 @@ class SerialMonitor {
   static final List<int> baudrates = [9600, 115200];
 
   final SerialPort _serialPort;
-  // late final SerialPortReader _serialReader;
   late final StreamSubscription<String> _serialStream;
 
   /// Create a serial monitor at `port`.
@@ -41,47 +40,26 @@ class SerialMonitor {
   }
 }
 
-// import 'dart:async';
-// import 'dart:convert';
-// import 'package:flutter_libserialport/flutter_libserialport.dart';
+// TODO: Remove function
+void testSerial() {
+  print(SerialMonitor.availablePorts);
+  SerialMonitor serialMonitor = SerialMonitor('/dev/cu.usbmodem2103', 115200);
+  ;
+  Timer(Duration(seconds: 2), () {
+    print('Timer finished!');
+    serialMonitor.close();
+    print('Serial port closed!');
 
-// class SerialMonitor {
-//   static List<String> availablePorts = SerialPort.availablePorts;
-
-//   SerialPort serialPort;
-//   late SerialPortReader serialReader;
-//   late StreamSubscription<String> serialStream;
-
-//   SerialMonitor(String port, int baudrate) : serialPort = SerialPort(port) {
-//     // serialPort = SerialPort(port);
-//     serialReader = SerialPortReader(serialPort);
-
-//     serialPort.openRead();
-//     SerialPortConfig config = serialPort.config;
-//     config.baudRate = 115200;
-//     serialPort.config = config;
-
-//     // bool openRead = serialPort.openRead();
-//     read();
-//   }
-
-//   static refreshPorts() {
-//     availablePorts = SerialPort.availablePorts;
-//   }
-
-//   void read() {
-//     Stream<List<int>> readStream = serialReader.stream;
-//     serialStream = readStream
-//         .map((data) => String.fromCharCodes(data))
-//         .transform(LineSplitter())
-//         .listen((String s) {
-//           print(s);
-//         });
-//   }
-
-//   void close() {
-//     // serialPort.close();
-//     serialStream.cancel();
-//     serialPort.dispose();
-//   }
-// }
+    print('New serial port opening');
+    SerialMonitor serialMonitor2 = SerialMonitor(
+      '/dev/cu.usbmodem2103',
+      115200,
+    );
+    print('New serial port opened');
+    Timer(Duration(seconds: 2), () {
+      print('Timer finished!');
+      serialMonitor2.close();
+      print('Serial port closed');
+    });
+  });
+}
