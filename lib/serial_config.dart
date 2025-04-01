@@ -13,88 +13,107 @@ class SerialConfig extends StatefulWidget {
 }
 
 class _SerialConfigState extends State<SerialConfig> {
-  String selectedPort = SerialMonitor.availablePorts.first;
+  List<String> portList = SerialMonitor.availablePorts;
+  late String selectedPort = portList.first;
   int selectedBaudrate = SerialMonitor.baudrates.first;
+
   bool connected = false;
-  late SerialMonitor serialMonitor;
+  SerialMonitor? serialMonitor;
 
   @override
   Widget build(BuildContext context) {
+    ButtonStyle buttonStyle = TextButton.styleFrom(
+      foregroundColor: Colors.black,
+      shape: RoundedRectangleBorder(),
+    );
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        DropdownButtonHideUnderline(
-          child: DropdownButton2(
-            items:
-                SerialMonitor.baudrates
-                    .map(
-                      (baudrate) => DropdownMenuItem(
-                        value: baudrate,
-                        child: Text(baudrate.toString()),
-                      ),
-                    )
-                    .toList(),
-            value: selectedBaudrate,
-            onChanged: (value) {
-              if (value != null) {
-                setState(() {
-                  selectedBaudrate = value;
-                });
-              }
-            },
-          ),
+        _SerialConfigDropdown(
+          items: portList,
+          value: selectedPort,
+          onChanged: (String? port) {
+            if (port != null) {
+              setState(() {
+                selectedPort = port;
+              });
+            }
+          },
         ),
-        DropdownButtonHideUnderline(
-          child: DropdownButton2(
-            items:
-                SerialMonitor.availablePorts
-                    .map(
-                      (port) =>
-                          DropdownMenuItem(value: port, child: Text(port)),
-                    )
-                    .toList(),
-            value: selectedPort,
-            onChanged: (value) {
-              if (value != null) {
-                setState(() {
-                  selectedPort = value;
-                });
-              }
-            },
-          ),
+        _SerialConfigDropdown(
+          items: SerialMonitor.baudrates,
+          value: selectedBaudrate,
+          onChanged: (int? baudrate) {
+            if (baudrate != null) {
+              setState(() {
+                selectedBaudrate = baudrate;
+              });
+            }
+          },
         ),
         TextButton.icon(
+          label: Text(serialMonitor == null ? 'Connect' : 'Disconnect'),
+          icon: Icon(Icons.compare_arrows),
           onPressed: () {
-            if (connected) {
-              serialMonitor.close();
-            } else {
-              serialMonitor = SerialMonitor(
+            SerialMonitor? localSerialMonitor = serialMonitor;
+            if (localSerialMonitor == null) {
+              // Connect serial monitor
+              localSerialMonitor = SerialMonitor(
                 selectedPort,
                 selectedBaudrate,
                 widget.carData,
               );
+            } else {
+              // Disconnect serial monitor
+              localSerialMonitor.close();
+              localSerialMonitor = null;
             }
             setState(() {
-              connected = !connected;
+              serialMonitor = localSerialMonitor;
             });
           },
-          label: Text(connected ? 'Disconnect' : 'Connect'),
-          icon: Icon(Icons.compare_arrows_outlined),
-          style: TextButton.styleFrom(shape: RoundedRectangleBorder()),
+          style: buttonStyle,
         ),
         TextButton.icon(
-          onPressed: () {
-            setState(() {
-              // TODO: Manually update lists in set state.
-              //       Current solution is not robust.
-              SerialMonitor.refreshPorts();
-            });
-          },
           label: Text('Refresh'),
           icon: Icon(Icons.refresh),
-          style: TextButton.styleFrom(shape: RoundedRectangleBorder()),
+          onPressed: () {
+            SerialMonitor.refreshPorts();
+            setState(() {
+              portList = SerialMonitor.availablePorts;
+            });
+          },
+          style: buttonStyle,
         ),
       ],
+    );
+  }
+}
+
+class _SerialConfigDropdown<T> extends StatelessWidget {
+  final List<T> items;
+  final T value;
+  final ValueChanged<T?> onChanged;
+
+  const _SerialConfigDropdown({
+    required this.items,
+    required this.value,
+    required this.onChanged,
+    super.key,
+  });
+
+  DropdownMenuItem<T> dropdownMenuItemOfItem(T item) {
+    return DropdownMenuItem(value: item, child: Text(item.toString()));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonHideUnderline(
+      child: DropdownButton2<T>(
+        items: items.map(dropdownMenuItemOfItem).toList(),
+        value: value,
+        onChanged: onChanged,
+      ),
     );
   }
 }
