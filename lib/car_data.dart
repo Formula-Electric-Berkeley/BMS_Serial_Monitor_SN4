@@ -37,10 +37,10 @@ class CellData {
   }
 }
 
-/// Randomize car data.
+/// Return a function that randomizes car data.
 ///
 /// Used to test GUI by generating random data.
-/// Function can be called periodically to simulate a stream
+/// Returned function can be called periodically to simulate a stream
 /// of data from the car.
 void Function(Timer) randomizeData(CarData carData) {
   void f(Timer t) {

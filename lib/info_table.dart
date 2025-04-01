@@ -118,7 +118,7 @@ class _InfoCellDataState extends State<InfoCellData> {
   Color color = InfoCell.defaultColor;
 
   _InfoCellDataState() {
-    Timer.periodic(Duration(milliseconds: 1000), updateCell);
+    Timer.periodic(Duration(milliseconds: 50), updateCell);
   }
 
   @override
