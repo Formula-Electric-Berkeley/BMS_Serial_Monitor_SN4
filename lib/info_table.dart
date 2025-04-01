@@ -35,10 +35,10 @@ class _InfoTableState extends State<InfoTable> {
             children: [
               InfoCell(text: '${cell + 1}'),
               ...List.generate(numBanks * 2, (colIndex) {
-                CellType cellType =
-                    colIndex % 2 == 0 ? CellType.voltage : CellType.temperature;
                 int bank = colIndex ~/ 2;
                 CellData cellData = widget.carData.getCell(bank, cell);
+                CellType cellType =
+                    colIndex % 2 == 0 ? CellType.voltage : CellType.temperature;
                 Color defaultColor =
                     bank % 2 == 0
                         ? InfoCell.defaultColorBank0

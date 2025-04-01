@@ -1,6 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:serial_monitor/serial_monitor.dart';
 import 'info_table.dart';
 import 'car_data.dart';
 
@@ -10,13 +9,18 @@ void main() {
 
 class MainApp extends StatelessWidget {
   final CarData carData = CarData();
+  late final SerialMonitor serialMonitor;
 
-  MainApp({super.key});
+  MainApp({super.key}) {
+    serialMonitor = SerialMonitor(
+      SerialMonitor.availablePorts.last,
+      115200,
+      carData,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Remove following line
-    Timer.periodic(Duration(milliseconds: 1000), randomizeData(carData));
     return MaterialApp(home: Scaffold(body: Center(child: InfoTable(carData))));
   }
 }
