@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:flutter_libserialport/flutter_libserialport.dart';
 import 'package:serial_monitor/car_data.dart';
-import 'constants.dart';
+import 'package:serial_monitor/constants.dart';
 
 class SerialMonitor {
   static List<String> availablePorts = SerialPort.availablePorts;

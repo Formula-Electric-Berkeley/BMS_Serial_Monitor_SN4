@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'constants.dart';
-import 'car_data.dart';
+import 'package:serial_monitor/car_data.dart';
+import 'package:serial_monitor/constants.dart';
 
 enum CellType { voltage, temperature }
 

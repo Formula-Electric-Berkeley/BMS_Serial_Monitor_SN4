@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'constants.dart';
+import 'package:serial_monitor/constants.dart';
 
 class CarData {
   final List<CellData> _cells = List.generate(
@@ -37,7 +37,11 @@ class CellData {
   }
 }
 
-// TODO: Remove function
+/// Randomize car data.
+///
+/// Used to test GUI by generating random data.
+/// Function can be called periodically to simulate a stream
+/// of data from the car.
 void Function(Timer) randomizeData(CarData carData) {
   void f(Timer t) {
     Random r = Random();
