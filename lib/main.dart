@@ -22,9 +22,11 @@ class MainApp extends StatelessWidget {
         body: Column(
           children: [
             SerialNavBar(carData),
-            Container(
-              color: Colors.purple,
-              child: InfoTable(carData),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [InfoTable(carData)],
+              ),
             ),
           ],
         ),

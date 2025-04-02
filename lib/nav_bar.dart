@@ -11,7 +11,21 @@ class SerialNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.orange,
-      child: SerialConfig(carData)
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          SerialConfig(carData),
+          TextButton.icon(
+            label: Text('Clear Data'),
+            icon: Icon(Icons.clear_sharp),
+            onPressed: carData.clear,
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.black,
+              shape: RoundedRectangleBorder(),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

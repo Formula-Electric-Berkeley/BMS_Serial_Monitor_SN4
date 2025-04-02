@@ -12,28 +12,54 @@ class CarData {
   CellData getCell(int bank, int cell) {
     return _cells[bank * numCellsPerBank + cell];
   }
+
+  void clear() {
+    for (CellData cellData in _cells) {
+      cellData.clear();
+    }
+  }
 }
 
 class CellData {
-  double voltage;
-  double temperature;
+  static const _defaultVoltage = 0;
+  static const _defaultTemperature = 0;
 
-  CellData({this.voltage = 0, this.temperature = 0});
+  double? voltage;
+  double? temperature;
+
+  CellData({this.voltage, this.temperature});
 
   String get stringOfVoltage {
-    return voltage.toStringAsFixed(voltageDecimalPrecision);
+    return (voltage ?? _defaultVoltage).toStringAsFixed(
+      voltageDecimalPrecision,
+    );
   }
 
   String get stringOfTemperature {
-    return temperature.toStringAsFixed(temperatureDecimalPrecision);
+    return (temperature ?? _defaultTemperature).toStringAsFixed(
+      temperatureDecimalPrecision,
+    );
   }
 
   bool get isUnderVoltage {
-    return voltage < minCellVoltage;
+    return (voltage ?? _defaultVoltage) < minCellVoltage;
   }
 
   bool get isOverVoltage {
-    return voltage > maxCellVoltage;
+    return (voltage ?? _defaultVoltage) > maxCellVoltage;
+  }
+
+  bool get isVoltageSet {
+    return voltage != null;
+  }
+
+  bool get isTemperatureSet {
+    return temperature != null;
+  }
+
+  void clear() {
+    voltage = null;
+    temperature = null;
   }
 }
 

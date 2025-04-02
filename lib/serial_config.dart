@@ -16,9 +16,37 @@ class _SerialConfigState extends State<SerialConfig> {
   List<String> portList = SerialMonitor.availablePorts;
   late String selectedPort = portList.first;
   int selectedBaudrate = SerialMonitor.baudrates.first;
-
-  bool connected = false;
   SerialMonitor? serialMonitor;
+
+  bool get isSerialConnected {
+    return serialMonitor != null;
+  }
+
+  void setSelectedPort(String? port) {
+    if (port != null) {
+      setState(() {
+        selectedPort = port;
+      });
+    }
+  }
+
+  void setSelectedBaudrate(int? baudrate) {
+    if (baudrate != null) {
+      setState(() {
+        selectedBaudrate = baudrate;
+      });
+    }
+  }
+
+  void updatePortList() {
+    SerialMonitor.refreshPorts();
+    setState(() {
+      portList = SerialMonitor.availablePorts;
+      if (!portList.contains(selectedPort)) {
+        selectedPort = portList.first;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,27 +60,15 @@ class _SerialConfigState extends State<SerialConfig> {
         _SerialConfigDropdown(
           items: portList,
           value: selectedPort,
-          onChanged: (String? port) {
-            if (port != null) {
-              setState(() {
-                selectedPort = port;
-              });
-            }
-          },
+          onChanged: isSerialConnected ? null : setSelectedPort,
         ),
         _SerialConfigDropdown(
           items: SerialMonitor.baudrates,
           value: selectedBaudrate,
-          onChanged: (int? baudrate) {
-            if (baudrate != null) {
-              setState(() {
-                selectedBaudrate = baudrate;
-              });
-            }
-          },
+          onChanged: isSerialConnected ? null : setSelectedBaudrate,
         ),
         TextButton.icon(
-          label: Text(serialMonitor == null ? 'Connect' : 'Disconnect'),
+          label: Text(isSerialConnected ? 'Disconnect' : 'Connect'),
           icon: Icon(Icons.compare_arrows),
           onPressed: () {
             SerialMonitor? localSerialMonitor = serialMonitor;
@@ -77,12 +93,7 @@ class _SerialConfigState extends State<SerialConfig> {
         TextButton.icon(
           label: Text('Refresh'),
           icon: Icon(Icons.refresh),
-          onPressed: () {
-            SerialMonitor.refreshPorts();
-            setState(() {
-              portList = SerialMonitor.availablePorts;
-            });
-          },
+          onPressed: isSerialConnected ? null : updatePortList,
           style: buttonStyle,
         ),
       ],
@@ -93,7 +104,7 @@ class _SerialConfigState extends State<SerialConfig> {
 class _SerialConfigDropdown<T> extends StatelessWidget {
   final List<T> items;
   final T value;
-  final ValueChanged<T?> onChanged;
+  final ValueChanged<T?>? onChanged;
 
   const _SerialConfigDropdown({
     required this.items,

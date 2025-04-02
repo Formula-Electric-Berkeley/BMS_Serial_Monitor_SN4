@@ -16,7 +16,8 @@ class SerialMonitor {
   /// Create a serial monitor at `port`.
   ///
   /// **Note:** Call `close()` to terminate serial connection.
-  SerialMonitor(String port, int baudrate, this._carData) : _serialPort = SerialPort(port) {
+  SerialMonitor(String port, int baudrate, this._carData)
+    : _serialPort = SerialPort(port) {
     SerialPortReader reader = SerialPortReader(_serialPort);
     _serialPort.openRead();
     SerialPortConfig config = _serialPort.config;
@@ -55,7 +56,7 @@ class SerialMonitor {
     List<String> splitted = s.split(' ');
     if (splitted.isEmpty) return;
     switch (splitted[0]) {
-      case 'cell':
+      case cellDataSerialId:
         _storeCellData(splitted);
         break;
       default:

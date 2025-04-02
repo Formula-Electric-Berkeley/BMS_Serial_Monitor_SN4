@@ -65,19 +65,24 @@ class InfoCell extends StatelessWidget {
   static const defaultColorBank1 = Colors.white;
   static const outOfRangeColor = Colors.red;
 
+  static const defaultTextColor = Colors.black;
+  static const disabledTextColor = Colors.grey;
+
   final String _text;
   final Color _color;
+  final Color _textColor;
 
-  const InfoCell({super.key, String? text, Color? color})
+  const InfoCell({super.key, String? text, Color? color, Color? textColor})
     : _text = text ?? '',
-      _color = color ?? InfoCell.defaultColor;
+      _color = color ?? InfoCell.defaultColor,
+      _textColor = textColor ?? InfoCell.defaultTextColor;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 60,
       color: _color,
-      child: Center(child: Text(_text)),
+      child: Center(child: Text(_text, style: TextStyle(color: _textColor))),
     );
   }
 }
@@ -105,10 +110,26 @@ class InfoCellData extends StatefulWidget {
 
   Color get color {
     if (cellType == CellType.voltage) {
-      bool outOfRange = cellData.isUnderVoltage || cellData.isOverVoltage;
-      return outOfRange ? InfoCell.outOfRangeColor : defaultColor;
+      if (!cellData.isVoltageSet ||
+          (!cellData.isUnderVoltage && !cellData.isOverVoltage)) {
+        return defaultColor;
+      } else {
+        return InfoCell.outOfRangeColor;
+      }
     } else {
       return defaultColor;
+    }
+  }
+
+  Color get textColor {
+    if (cellType == CellType.voltage) {
+      return cellData.isVoltageSet
+          ? InfoCell.defaultTextColor
+          : InfoCell.disabledTextColor;
+    } else {
+      return cellData.isTemperatureSet
+          ? InfoCell.defaultTextColor
+          : InfoCell.disabledTextColor;
     }
   }
 }
@@ -116,6 +137,7 @@ class InfoCellData extends StatefulWidget {
 class _InfoCellDataState extends State<InfoCellData> {
   String text = '';
   Color color = InfoCell.defaultColor;
+  Color textColor = InfoCell.defaultTextColor;
 
   _InfoCellDataState() {
     Timer.periodic(Duration(milliseconds: 50), updateCell);
@@ -123,13 +145,14 @@ class _InfoCellDataState extends State<InfoCellData> {
 
   @override
   Widget build(BuildContext context) {
-    return InfoCell(text: text, color: color);
+    return InfoCell(text: text, color: color, textColor: textColor);
   }
 
   void updateCell(Timer t) {
     setState(() {
       text = widget.text;
       color = widget.color;
+      textColor = widget.textColor;
     });
   }
 }
