@@ -16,6 +16,15 @@ class InfoTable extends StatefulWidget {
 }
 
 class _InfoTableState extends State<InfoTable> {
+  List<Color> cellNoColor = List.generate(
+    numCellsPerBank,
+    (index) => InfoCell.defaultColor,
+  );
+  List<Color> bankNoColor = List.generate(
+    numBanks * 2,
+    (index) => InfoCell.defaultColor,
+  );
+
   @override
   Widget build(BuildContext context) {
     return Table(
@@ -26,14 +35,17 @@ class _InfoTableState extends State<InfoTable> {
             ...List.generate(numBanks * 2, (index) {
               int bank = (index >> 1) + 1;
               String columnType = index % 2 == 0 ? 'V' : 'T';
-              return InfoCell(text: 'B$bank$columnType');
+              return InfoCell(
+                text: 'B$bank$columnType',
+                color: bankNoColor[index],
+              );
             }),
           ],
         ),
         ...List.generate(numCellsPerBank, (cell) {
           return TableRow(
             children: [
-              InfoCell(text: '${cell + 1}'),
+              InfoCell(text: '${cell + 1}', color: cellNoColor[cell]),
               ...List.generate(numBanks * 2, (colIndex) {
                 int bank = colIndex ~/ 2;
                 CellData cellData = widget.carData.getCell(bank, cell);
@@ -43,10 +55,23 @@ class _InfoTableState extends State<InfoTable> {
                     bank % 2 == 0
                         ? InfoCell.defaultColorBank0
                         : InfoCell.defaultColorBank1;
-                return InfoCellData(
-                  cellData: cellData,
-                  cellType: cellType,
-                  defaultColor: defaultColor,
+                return MouseRegion(
+                  onEnter: (event) {
+                    setState(() {
+                        cellNoColor[cell] = Colors.orange;
+                        bankNoColor[colIndex] = Colors.orange;
+                    });
+                  },
+                  onExit:
+                      (event) => setState(() {
+                        cellNoColor[cell] = InfoCell.defaultColor;
+                        bankNoColor[colIndex] = InfoCell.defaultColor;
+                      }),
+                  child: InfoCellData(
+                    cellData: cellData,
+                    cellType: cellType,
+                    defaultColor: defaultColor,
+                  ),
                 );
               }),
             ],
