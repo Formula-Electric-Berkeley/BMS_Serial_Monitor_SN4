@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:serial_monitor/app_settings.dart';
 import 'package:serial_monitor/car_data.dart';
 import 'package:serial_monitor/serial_config.dart';
 
-class SerialNavBar extends StatelessWidget {
+class NavBar extends StatelessWidget {
   final CarData carData;
 
-  const SerialNavBar(this.carData, {super.key});
+  const NavBar(this.carData, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +20,15 @@ class SerialNavBar extends StatelessWidget {
             label: Text('Clear Data'),
             icon: Icon(Icons.clear_sharp),
             onPressed: carData.clear,
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.black,
+              shape: RoundedRectangleBorder(),
+            ),
+          ),
+          TextButton.icon(
+            label: Text('Settings'),
+            icon: Icon(Icons.settings),
+            onPressed: showSettings(context),
             style: TextButton.styleFrom(
               foregroundColor: Colors.black,
               shape: RoundedRectangleBorder(),

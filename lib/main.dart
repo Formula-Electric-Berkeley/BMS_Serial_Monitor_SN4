@@ -21,7 +21,7 @@ class MainApp extends StatelessWidget {
       home: Scaffold(
         body: Column(
           children: [
-            SerialNavBar(carData),
+            NavBar(carData),
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
