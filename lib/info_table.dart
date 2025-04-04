@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:serial_monitor/car_data.dart';
 import 'package:serial_monitor/constants.dart';
@@ -15,14 +16,45 @@ class InfoTable extends StatefulWidget {
 }
 
 class _InfoTableState extends State<InfoTable> {
-  List<Color> cellNoColor = List.generate(
-    numCellsPerBank,
-    (index) => InfoCell.defaultColor,
-  );
-  List<Color> bankNoColor = List.generate(
-    numBanks * 2,
-    (index) => InfoCell.defaultColor,
-  );
+  List<Color> cellNoColor = List.filled(numCellsPerBank, InfoCell.defaultColor);
+  List<Color> bankNoColor = List.filled(numBanks * 2, InfoCell.defaultColor);
+
+  void Function(PointerEnterEvent) infoDataCellOnEnter(int cell, int colIndex) {
+    void f(PointerEnterEvent event) {
+      if (globals.highlightCellLocation) {
+        setState(() {
+          cellNoColor[cell] = InfoCell.locateColor;
+          bankNoColor[colIndex] = InfoCell.locateColor;
+        });
+      } else {
+        if (cellNoColor[cell] == InfoCell.locateColor) {
+          setState(() {
+            cellNoColor[cell] = InfoCell.defaultColor;
+          });
+        }
+        if (bankNoColor[colIndex] == InfoCell.locateColor) {
+          setState(() {
+            bankNoColor[colIndex] = InfoCell.defaultColor;
+          });
+        }
+      }
+    }
+
+    return f;
+  }
+
+  void Function(PointerExitEvent) infoDataCellOnExit(int cell, int colIndex) {
+    void f(PointerExitEvent event) {
+      if (cellNoColor[cell] == InfoCell.locateColor) {
+        setState(() => cellNoColor[cell] = InfoCell.defaultColor);
+      }
+      if (bankNoColor[colIndex] == InfoCell.locateColor) {
+        setState(() => bankNoColor[colIndex] = InfoCell.defaultColor);
+      }
+    }
+
+    return f;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,35 +87,8 @@ class _InfoTableState extends State<InfoTable> {
                         ? InfoCell.defaultColorBank0
                         : InfoCell.defaultColorBank1;
                 return MouseRegion(
-                  onEnter: (event) {
-                    if (globals.highlightCellLocation) {
-                      setState(() {
-                        cellNoColor[cell] = Colors.orange;
-                        bankNoColor[colIndex] = Colors.orange;
-                      });
-                    } else {
-                      if (cellNoColor[cell] == Colors.orange) {
-                        setState(() {
-                          cellNoColor[cell] = InfoCell.defaultColor;
-                        });
-                      }
-                      if (bankNoColor[colIndex] == Colors.orange) {
-                        setState(() {
-                          bankNoColor[colIndex] = InfoCell.defaultColor;
-                        });
-                      }
-                    }
-                  },
-                  onExit: (event) {
-                    if (cellNoColor[cell] == Colors.orange) {
-                      setState(() => cellNoColor[cell] = InfoCell.defaultColor);
-                    }
-                    if (bankNoColor[colIndex] == Colors.orange) {
-                      setState(
-                        () => bankNoColor[colIndex] = InfoCell.defaultColor,
-                      );
-                    }
-                  },
+                  onEnter: infoDataCellOnEnter(cell, colIndex),
+                  onExit: infoDataCellOnExit(cell, colIndex),
                   child: _InfoCellData(
                     cellData: cellData,
                     cellType: cellType,
@@ -106,6 +111,7 @@ class InfoCell extends StatelessWidget {
   static const defaultColorBank0 = Color.fromARGB(255, 225, 225, 225);
   static const defaultColorBank1 = Colors.white;
   static const outOfRangeColor = Colors.red;
+  static const locateColor = Colors.orange;
 
   static const defaultTextColor = Colors.black;
   static const disabledTextColor = Colors.grey;
