@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:serial_monitor/car_data.dart';
 import 'package:serial_monitor/constants.dart';
 
+import 'package:serial_monitor/globals.dart' as globals;
+
 enum CellType { voltage, temperature }
 
 class InfoTable extends StatefulWidget {
-  final CarData carData;
-
-  const InfoTable(this.carData, {super.key});
+  const InfoTable({super.key});
 
   @override
   State<InfoTable> createState() => _InfoTableState();
@@ -48,7 +48,7 @@ class _InfoTableState extends State<InfoTable> {
               InfoCell(text: '${cell + 1}', color: cellNoColor[cell]),
               ...List.generate(numBanks * 2, (colIndex) {
                 int bank = colIndex ~/ 2;
-                CellData cellData = widget.carData.getCell(bank, cell);
+                CellData cellData = globals.carData.getCell(bank, cell);
                 CellType cellType =
                     colIndex % 2 == 0 ? CellType.voltage : CellType.temperature;
                 Color defaultColor =
