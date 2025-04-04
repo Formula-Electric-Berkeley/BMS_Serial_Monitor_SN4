@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:serial_monitor/car_data.dart';
 import 'package:serial_monitor/constants.dart';
-
 import 'package:serial_monitor/globals.dart' as globals;
 
 enum CellType { voltage, temperature }
@@ -58,8 +57,8 @@ class _InfoTableState extends State<InfoTable> {
                 return MouseRegion(
                   onEnter: (event) {
                     setState(() {
-                        cellNoColor[cell] = Colors.orange;
-                        bankNoColor[colIndex] = Colors.orange;
+                      cellNoColor[cell] = Colors.orange;
+                      bankNoColor[colIndex] = Colors.orange;
                     });
                   },
                   onExit:
@@ -67,7 +66,7 @@ class _InfoTableState extends State<InfoTable> {
                         cellNoColor[cell] = InfoCell.defaultColor;
                         bankNoColor[colIndex] = InfoCell.defaultColor;
                       }),
-                  child: InfoCellData(
+                  child: _InfoCellData(
                     cellData: cellData,
                     cellType: cellType,
                     defaultColor: defaultColor,
@@ -112,20 +111,19 @@ class InfoCell extends StatelessWidget {
   }
 }
 
-class InfoCellData extends StatefulWidget {
+class _InfoCellData extends StatefulWidget {
   final CellData cellData;
   final CellType cellType;
   final Color defaultColor;
 
-  const InfoCellData({
-    super.key,
+  const _InfoCellData({
     required this.cellData,
     required this.cellType,
     required this.defaultColor,
   });
 
   @override
-  State<InfoCellData> createState() => _InfoCellDataState();
+  State<_InfoCellData> createState() => _InfoCellDataState();
 
   String get text {
     return cellType == CellType.voltage
@@ -159,7 +157,7 @@ class InfoCellData extends StatefulWidget {
   }
 }
 
-class _InfoCellDataState extends State<InfoCellData> {
+class _InfoCellDataState extends State<_InfoCellData> {
   String text = '';
   Color color = InfoCell.defaultColor;
   Color textColor = InfoCell.defaultTextColor;

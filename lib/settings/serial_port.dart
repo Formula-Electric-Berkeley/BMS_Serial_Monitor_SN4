@@ -1,6 +1,6 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:serial_monitor/globals.dart' as globals;
-import 'package:dropdown_button2/dropdown_button2.dart';
 
 class SerialPortSettings extends StatefulWidget {
   const SerialPortSettings({super.key});
