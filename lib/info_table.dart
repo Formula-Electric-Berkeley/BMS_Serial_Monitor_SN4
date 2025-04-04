@@ -56,16 +56,34 @@ class _InfoTableState extends State<InfoTable> {
                         : InfoCell.defaultColorBank1;
                 return MouseRegion(
                   onEnter: (event) {
-                    setState(() {
-                      cellNoColor[cell] = Colors.orange;
-                      bankNoColor[colIndex] = Colors.orange;
-                    });
+                    if (globals.highlightCellLocation) {
+                      setState(() {
+                        cellNoColor[cell] = Colors.orange;
+                        bankNoColor[colIndex] = Colors.orange;
+                      });
+                    } else {
+                      if (cellNoColor[cell] == Colors.orange) {
+                        setState(() {
+                          cellNoColor[cell] = InfoCell.defaultColor;
+                        });
+                      }
+                      if (bankNoColor[colIndex] == Colors.orange) {
+                        setState(() {
+                          bankNoColor[colIndex] = InfoCell.defaultColor;
+                        });
+                      }
+                    }
                   },
-                  onExit:
-                      (event) => setState(() {
-                        cellNoColor[cell] = InfoCell.defaultColor;
-                        bankNoColor[colIndex] = InfoCell.defaultColor;
-                      }),
+                  onExit: (event) {
+                    if (cellNoColor[cell] == Colors.orange) {
+                      setState(() => cellNoColor[cell] = InfoCell.defaultColor);
+                    }
+                    if (bankNoColor[colIndex] == Colors.orange) {
+                      setState(
+                        () => bankNoColor[colIndex] = InfoCell.defaultColor,
+                      );
+                    }
+                  },
                   child: _InfoCellData(
                     cellData: cellData,
                     cellType: cellType,
