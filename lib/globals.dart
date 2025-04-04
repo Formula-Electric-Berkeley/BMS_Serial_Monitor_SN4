@@ -6,4 +6,6 @@ final CarData carData = CarData();
 final SerialMonitor serialMonitor = SerialMonitor(carData);
 
 // Info table
-bool infoTableHighlightCells = true;
+bool highlightCellLocation = true;
+bool highlightInvalidVoltage = true;
+bool highlightInvalidTemperature = true;
