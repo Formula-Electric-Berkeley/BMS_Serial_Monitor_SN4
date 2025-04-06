@@ -27,7 +27,6 @@ class _InfoTableSettingsState extends State<InfoTableSettings> {
                 _SettingsCheckbox(
                   isChecked: highlightCellLocation,
                   onChanged: (bool? value) {
-                    print("location!");
                     if (value != null) {
                       setState(() => highlightCellLocation = value);
                     }
