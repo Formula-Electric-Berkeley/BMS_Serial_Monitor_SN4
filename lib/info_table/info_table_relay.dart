@@ -32,7 +32,7 @@ class _InfoTableRelayState extends State<InfoTableRelay> {
         [
           InfoTableEntry(text: 'AIR+', width: entryWidth),
           InfoTableEntry(text: 'AIR-', width: entryWidth),
-          InfoTableEntry(text: 'Pre-charge', width: entryWidth),
+          InfoTableEntry(text: 'Precharge', width: entryWidth),
         ],
         [
           InfoTableEntry(text: relayData.stringOfAirPlus),

@@ -139,6 +139,12 @@ class SerialMonitor {
       case cellDataSerialId:
         _storeCellData(splitted);
         break;
+      case relayDataSerialId:
+        _storeRelayData(splitted);
+        break;
+      case ivtDataSerialId:
+        _storeIVTData(splitted);
+        break;
       default:
     }
   }
@@ -166,5 +172,55 @@ class SerialMonitor {
     CellData cellData = _carData.getCell(bank, cell);
     cellData.voltage = voltage;
     cellData.temperature = temperature;
+  }
+
+  void _storeRelayData(List<String> data) {
+    if (data.length != 4) return;
+
+    // AIR+
+    bool? airPlusOpen = bool.tryParse(data[1]);
+    if (airPlusOpen == null) return;
+
+    // AIR-
+    bool? airMinusOpen = bool.tryParse(data[2]);
+    if (airMinusOpen == null) return;
+
+    // Precharge
+    bool? prechargeOpen = bool.tryParse(data[3]);
+    if (prechargeOpen == null) return;
+
+    // Store data
+    RelayData relayData = _carData.relayData;
+    relayData.airPlusOpen = airPlusOpen;
+    relayData.airMinusOpen = airMinusOpen;
+    relayData.prechargeOpen = prechargeOpen;
+  }
+
+  void _storeIVTData(List<String> data) {
+    // Format: IVT i v1 v2 v3
+    if (data.length != 5) return;
+    
+    // Current
+    double? current = double.tryParse(data[1]);
+    if (current == null) return;
+
+    // Voltage 1
+    double? voltage1 = double.tryParse(data[2]);
+    if (voltage1 == null) return;
+
+    // Voltage 2
+    double? voltage2 = double.tryParse(data[3]);
+    if (voltage2 == null) return;
+
+    // Voltage 3
+    double? voltage3 = double.tryParse(data[4]);
+    if (voltage3 == null) return;
+
+    // Store data
+    IVTData ivtData = _carData.ivtData;
+    ivtData.current = current;
+    ivtData.voltage1 = voltage1;
+    ivtData.voltage2 = voltage2;
+    ivtData.voltage3 = voltage3;
   }
 }

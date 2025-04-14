@@ -13,8 +13,14 @@ class CarData {
   /// List of bank-related statistics.
   final List<BankData> _banks = List.generate(numBanks, (bank) => BankData());
 
+  /// Pack-related statistics.
+  final PackData packData = PackData();
+
   /// Collection of relay states.
   final RelayData relayData = RelayData();
+
+  /// IVT voltage and current data.
+  final IVTData ivtData = IVTData();
 
   CarData() {
     Timer.periodic(Duration(milliseconds: 100), _update);
@@ -34,6 +40,7 @@ class CarData {
     for (int bank = 0; bank < numBanks; bank++) {
       _updateBank(bank);
     }
+    _updatePack();
   }
 
   /// Update bank statistics.
@@ -64,8 +71,37 @@ class CarData {
     // Update bank data
     BankData bankData = _banks[bank];
     bankData.totalVoltage = totalVoltage;
-    bankData.averageVoltage = totalVoltage / numVoltageCells;
-    bankData.averageTemperature = totalTemperature / numTemperatureCells;
+    bankData.totalTemperature = totalTemperature;
+    bankData.numVoltageCells = numVoltageCells;
+    bankData.numTemperatureCells = numTemperatureCells;
+  }
+
+  /// Update pack statistics.
+  ///
+  /// Computes pack data from bank data.
+  /// Recommended to call this function after
+  /// calling [_updateBank] for all banks.
+  void _updatePack() {
+    double totalVoltage = 0;
+    double totalTemperature = 0;
+    int numVoltageCells = 0;
+    int numTemperatureCells = 0;
+
+    for (BankData bankData in _banks) {
+      // Accumulate bank voltage
+      totalVoltage += bankData.totalVoltage;
+      numVoltageCells += bankData.numVoltageCells;
+
+      // Accumulate bank temperature
+      totalTemperature += bankData.totalTemperature;
+      numTemperatureCells += bankData.numTemperatureCells;
+    }
+
+    // Store data
+    packData.totalVoltage = totalVoltage;
+    packData.totalTemperature = totalTemperature;
+    packData.numVoltageCells = numVoltageCells;
+    packData.numTemperatureCells = numTemperatureCells;
   }
 
   /// Reset all statistics.
@@ -122,54 +158,106 @@ class CellData {
 
 /// Bank-related statistics.
 class BankData {
-  double totalVoltage;
-  double averageVoltage;
-  double averageTemperature;
-
-  BankData({
-    this.totalVoltage = 0,
-    this.averageVoltage = 0,
-    this.averageTemperature = 0,
-  });
+  double totalVoltage = 0;
+  double totalTemperature = 0;
+  int numVoltageCells = 0;
+  int numTemperatureCells = 0;
 
   String get stringOfTotalVoltage {
     return totalVoltage.toStringAsFixed(voltageDecimalPrecision);
   }
 
   String get stringOfAverageVoltage {
-    return averageVoltage.toStringAsFixed(voltageDecimalPrecision);
+    return (totalVoltage / numVoltageCells).toStringAsFixed(
+      voltageDecimalPrecision,
+    );
   }
 
   String get stringOfAverageTemperature {
-    return averageTemperature.toStringAsFixed(voltageDecimalPrecision);
+    return (totalTemperature / numTemperatureCells).toStringAsFixed(
+      temperatureDecimalPrecision,
+    );
   }
+}
 
-  void update() {}
+/// Pack-related statistics.
+class PackData {
+  double totalVoltage = 0;
+  double totalTemperature = 0;
+  int numVoltageCells = 0;
+  int numTemperatureCells = 0;
+
+  String get stringOfTotalVoltage =>
+      totalVoltage.toStringAsFixed(voltageDecimalPrecision);
+
+  String get stringOfAverageVoltage =>
+      (totalVoltage / numVoltageCells).toStringAsFixed(voltageDecimalPrecision);
+
+  String get stringOfAverageTemperature =>
+      (totalTemperature / numTemperatureCells).toStringAsFixed(
+        temperatureDecimalPrecision,
+      );
 }
 
 /// Relay state.
 class RelayData {
-  bool? airPlus;
-  bool? airMinus;
-  bool? precharge;
+  bool? airPlusOpen;
+  bool? airMinusOpen;
+  bool? prechargeOpen;
 
-  String get stringOfAirPlus => switch (airPlus) {
+  String get stringOfAirPlus => switch (airPlusOpen) {
     true => 'Open',
     false => 'Close',
     _ => '-',
   };
 
-  String get stringOfAirMinus => switch (airPlus) {
+  String get stringOfAirMinus => switch (airMinusOpen) {
     true => 'Open',
     false => 'Close',
     _ => '-',
   };
 
-  String get stringOfPrecharge => switch (airPlus) {
+  String get stringOfPrecharge => switch (prechargeOpen) {
     true => 'Open',
     false => 'Close',
     _ => '-',
   };
+}
+
+/// IVT data.
+class IVTData {
+  double? current;
+  double? voltage1;
+  double? voltage2;
+  double? voltage3;
+
+  String get stringOfCurrent {
+    double? current = this.current;
+    return current != null
+        ? current.toStringAsFixed(currentDecimalPrecision)
+        : '-';
+  }
+
+  String get stringOfVoltage1 {
+    double? voltage1 = this.voltage1;
+    return voltage1 != null
+        ? voltage1.toStringAsFixed(voltageDecimalPrecision)
+        : '-';
+  }
+
+  String get stringOfVoltage2 {
+    double? voltage2 = this.voltage2;
+    return voltage2 != null
+        ? voltage2.toStringAsFixed(voltageDecimalPrecision)
+        : '-';
+  }
+
+  String get stringOfVoltage3 {
+    double? voltage3 = this.voltage3;
+    return voltage3 != null
+        ? voltage3.toStringAsFixed(voltageDecimalPrecision)
+        : '-';
+  }
 }
 
 /// Return a function that randomizes car data.

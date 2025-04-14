@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:serial_monitor/car_data.dart';
 import 'package:serial_monitor/info_table/info_table.dart';
 import 'package:serial_monitor/info_table/info_table_entry.dart';
+import 'package:serial_monitor/globals.dart' as globals;
 
 class InfoTableVTStats extends StatefulWidget {
   const InfoTableVTStats({super.key});
@@ -11,6 +13,7 @@ class InfoTableVTStats extends StatefulWidget {
 
 class _InfoTableVTStatsState extends State<InfoTableVTStats> {
   static const double entryWidth = 180;
+  static final PackData packData = globals.carData.packData;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +24,11 @@ class _InfoTableVTStatsState extends State<InfoTableVTStats> {
           InfoTableEntry(text: 'Avg. Voltage', width: entryWidth),
           InfoTableEntry(text: 'Avg. Temperature', width: entryWidth),
         ],
-        [InfoTableEntry(), InfoTableEntry(), InfoTableEntry()],
+        [
+          InfoTableEntry(text: packData.stringOfTotalVoltage),
+          InfoTableEntry(text: packData.stringOfAverageVoltage),
+          InfoTableEntry(text: packData.stringOfAverageTemperature),
+        ],
       ],
     );
   }
