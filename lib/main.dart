@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:serial_monitor/info_table.dart';
+import 'package:serial_monitor/info_table/info_table_vt.dart';
 import 'package:serial_monitor/nav_bar.dart';
 
 void main() {
@@ -22,7 +22,7 @@ class MainApp extends StatelessWidget {
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [InfoTable()],
+                children: [InfoTableVT()],
               ),
             ),
           ],

@@ -73,6 +73,7 @@ class CarData {
   }
 }
 
+/// Cell related statistics.
 class CellData {
   static const _defaultVoltage = 0;
   static const _defaultTemperature = 0;
@@ -116,6 +117,7 @@ class CellData {
   }
 }
 
+/// Bank related statistics.
 class BankData {
   double totalVoltage;
   double averageVoltage;
@@ -128,21 +130,15 @@ class BankData {
   });
 
   String get stringOfTotalVoltage {
-    return totalVoltage.toStringAsFixed(
-      voltageDecimalPrecision,
-    );
+    return totalVoltage.toStringAsFixed(voltageDecimalPrecision);
   }
 
   String get stringOfAverageVoltage {
-    return totalVoltage.toStringAsFixed(
-      voltageDecimalPrecision,
-    );
+    return averageVoltage.toStringAsFixed(voltageDecimalPrecision);
   }
 
   String get stringOfAverageTemperature {
-    return totalVoltage.toStringAsFixed(
-      voltageDecimalPrecision,
-    );
+    return averageTemperature.toStringAsFixed(voltageDecimalPrecision);
   }
 
   void update() {}
