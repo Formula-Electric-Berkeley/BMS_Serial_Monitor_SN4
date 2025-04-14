@@ -27,7 +27,10 @@ class _InfoTableVTState extends State<InfoTableVT> {
   );
 
   _InfoTableVTState() {
-    Timer.periodic(Duration(milliseconds: 50), (_) => setState(() {}));
+    Timer.periodic(
+      Duration(milliseconds: globals.infoTableRefreshRateMs),
+      (_) => setState(() {}),
+    );
   }
 
   Color defaultBankBgColor(int bank) =>

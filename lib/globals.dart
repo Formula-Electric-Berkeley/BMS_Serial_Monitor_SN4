@@ -9,3 +9,4 @@ final SerialMonitor serialMonitor = SerialMonitor(carData);
 bool highlightCellLocation = true;
 bool highlightInvalidVoltage = true;
 bool highlightInvalidTemperature = true;
+int infoTableRefreshRateMs = 50;

@@ -13,6 +13,9 @@ class CarData {
   /// List of bank-related statistics.
   final List<BankData> _banks = List.generate(numBanks, (bank) => BankData());
 
+  /// Collection of relay states.
+  final RelayData relayData = RelayData();
+
   CarData() {
     Timer.periodic(Duration(milliseconds: 100), _update);
   }
@@ -73,7 +76,7 @@ class CarData {
   }
 }
 
-/// Cell related statistics.
+/// Cell-related statistics.
 class CellData {
   static const _defaultVoltage = 0;
   static const _defaultTemperature = 0;
@@ -117,7 +120,7 @@ class CellData {
   }
 }
 
-/// Bank related statistics.
+/// Bank-related statistics.
 class BankData {
   double totalVoltage;
   double averageVoltage;
@@ -142,6 +145,31 @@ class BankData {
   }
 
   void update() {}
+}
+
+/// Relay state.
+class RelayData {
+  bool? airPlus;
+  bool? airMinus;
+  bool? precharge;
+
+  String get stringOfAirPlus => switch (airPlus) {
+    true => 'Open',
+    false => 'Close',
+    _ => '-',
+  };
+
+  String get stringOfAirMinus => switch (airPlus) {
+    true => 'Open',
+    false => 'Close',
+    _ => '-',
+  };
+
+  String get stringOfPrecharge => switch (airPlus) {
+    true => 'Open',
+    false => 'Close',
+    _ => '-',
+  };
 }
 
 /// Return a function that randomizes car data.

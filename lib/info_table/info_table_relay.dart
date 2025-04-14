@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:serial_monitor/car_data.dart';
 import 'package:serial_monitor/info_table/info_table.dart';
 import 'package:serial_monitor/info_table/info_table_entry.dart';
+import 'package:serial_monitor/globals.dart' as globals;
 
 /// [InfoTable] for relays.
 class InfoTableRelay extends StatefulWidget {
@@ -12,6 +16,14 @@ class InfoTableRelay extends StatefulWidget {
 
 class _InfoTableRelayState extends State<InfoTableRelay> {
   static const double entryWidth = 90;
+  static final RelayData relayData = globals.carData.relayData;
+
+  _InfoTableRelayState() {
+    Timer.periodic(
+      Duration(milliseconds: globals.infoTableRefreshRateMs),
+      (_) => setState(() {}),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +32,13 @@ class _InfoTableRelayState extends State<InfoTableRelay> {
         [
           InfoTableEntry(text: 'AIR+', width: entryWidth),
           InfoTableEntry(text: 'AIR-', width: entryWidth),
-          InfoTableEntry(text: 'PC', width: entryWidth),
+          InfoTableEntry(text: 'Pre-charge', width: entryWidth),
         ],
-        [InfoTableEntry(), InfoTableEntry(), InfoTableEntry()],
+        [
+          InfoTableEntry(text: relayData.stringOfAirPlus),
+          InfoTableEntry(text: relayData.stringOfAirMinus),
+          InfoTableEntry(text: relayData.stringOfPrecharge),
+        ],
       ],
     );
   }
