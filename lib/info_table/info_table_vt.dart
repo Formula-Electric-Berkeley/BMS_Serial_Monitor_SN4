@@ -8,6 +8,7 @@ import 'package:serial_monitor/globals.dart' as globals;
 import 'package:serial_monitor/info_table/info_table.dart';
 import 'package:serial_monitor/info_table/info_table_entry.dart';
 
+/// [InfoTable] for cell voltage and temperature.
 class InfoTableVT extends StatefulWidget {
   const InfoTableVT({super.key});
 

@@ -20,20 +20,23 @@ class InfoTableEntry extends StatelessWidget {
   final String _text;
   final Color _bgColor;
   final Color _textColor;
+  final double _width;
 
   const InfoTableEntry({
     super.key,
     String? text,
     Color? bgColor,
     Color? textColor,
+    double? width,
   }) : _text = text ?? '',
        _bgColor = bgColor ?? InfoTableColors.defaultBgColor,
-       _textColor = textColor ?? InfoTableColors.defaultTextColor;
+       _textColor = textColor ?? InfoTableColors.defaultTextColor,
+       _width = width ?? 60;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 60,
+      width: _width,
       color: _bgColor,
       child: Center(child: Text(_text, style: TextStyle(color: _textColor))),
     );
