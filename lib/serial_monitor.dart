@@ -132,6 +132,7 @@ class SerialMonitor {
         });
   }
 
+  /// Parse [String] read from serial port.
   void _parse(String s) {
     List<String> splitted = s.split(' ');
     if (splitted.isEmpty) return;

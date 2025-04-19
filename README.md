@@ -1,5 +1,9 @@
 # Serial Monitor
 
+## Notes
+
+Design inspired by CoolTerm serial monitor app on MacOS.
+
 ## Serial Input
 
 Cell Data

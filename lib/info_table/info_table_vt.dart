@@ -33,11 +33,15 @@ class _InfoTableVTState extends State<InfoTableVT> {
     );
   }
 
+  /// Default background color for every bank.
+  /// 
+  /// Used for alternating colors between banks.
   Color defaultBankBgColor(int bank) =>
       bank % 2 == 0
           ? InfoTableColors.bank0BgColor
           : InfoTableColors.bank1BgColor;
 
+  /// Table header widgets.
   List<Widget> header() {
     return [
       InfoTableEntry(text: 'Cell No.'),
@@ -52,6 +56,7 @@ class _InfoTableVTState extends State<InfoTableVT> {
     ];
   }
 
+  /// Table body widgets.
   List<List<Widget>> body() {
     return List.generate(
       Constants.numCellsPerBank,
@@ -81,6 +86,9 @@ class _InfoTableVTState extends State<InfoTableVT> {
     );
   }
 
+  /// On mouse entry, set background color of cell number and bank number.
+  /// 
+  /// Returns a function that can be called on mouse entry.
   void Function(PointerEnterEvent) bodyEntryOnEnter(int cell, int colIndex) {
     void f(PointerEnterEvent event) {
       if (globals.highlightCellLocation) {
@@ -105,6 +113,9 @@ class _InfoTableVTState extends State<InfoTableVT> {
     return f;
   }
 
+  /// On mouse exit, set background color of cell number and bank number.
+  /// 
+  /// Returns a function that can be called on mouse exit.
   void Function(PointerExitEvent) bodyEntryOnExit(int cell, int colIndex) {
     void f(PointerExitEvent event) {
       if (cellNoBgColor[cell] == InfoTableColors.locateBgColor) {
@@ -120,6 +131,9 @@ class _InfoTableVTState extends State<InfoTableVT> {
     return f;
   }
 
+  /// Bank statistics (total) widgets.
+  /// 
+  /// Widgets for total voltage in a bank.
   List<Widget> statsTotal() {
     return [
       InfoTableEntry(text: 'Total'),
@@ -140,6 +154,10 @@ class _InfoTableVTState extends State<InfoTableVT> {
     ];
   }
 
+  /// Bank statistics (average) widgets.
+  /// 
+  /// Widgets for average cell voltage and average
+  /// cell temperature in a bank.
   List<Widget> statsAverage() {
     return [
       InfoTableEntry(text: 'Avg.'),
@@ -168,6 +186,7 @@ class _InfoTableVTState extends State<InfoTableVT> {
   }
 }
 
+/// Abstract layout for VT table entries.
 abstract class _Entry extends StatelessWidget {
   String get text => '';
   Color get bgColor => InfoTableColors.defaultBgColor;
@@ -179,6 +198,7 @@ abstract class _Entry extends StatelessWidget {
   }
 }
 
+/// Table entry for cell voltage.
 class _VoltageEntry extends _Entry {
   final Color defaultBgColor;
   final CellData cellData;
@@ -210,6 +230,7 @@ class _VoltageEntry extends _Entry {
           : InfoTableColors.disabledTextColor;
 }
 
+/// Table entry for cell temperature.
 class _TemperatureEntry extends _Entry {
   final Color defaultBgColor;
   final CellData cellData;
@@ -234,6 +255,7 @@ class _TemperatureEntry extends _Entry {
 
 enum _BankStatType { totalVoltage, averageVoltage, averageTemperature }
 
+/// Table entry for bank statistics.
 class _BankStatEntry extends _Entry {
   final BankData bankData;
   final _BankStatType bankStatType;

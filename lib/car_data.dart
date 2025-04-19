@@ -113,6 +113,8 @@ class CarData {
     for (CellData cellData in _cells) {
       cellData.clear();
     }
+    relayData.clear();
+    ivtData.clear();
   }
 }
 
@@ -234,6 +236,12 @@ class RelayData {
     false => 'Close',
     _ => '-',
   };
+
+  void clear() {
+    airPlusOpen = null;
+    airMinusOpen = null;
+    prechargeOpen = null;
+  }
 }
 
 /// IVT data.
@@ -269,6 +277,13 @@ class IVTData {
     return voltage3 != null
         ? voltage3.toStringAsFixed(Constants.voltageDecimalPrecision)
         : '-';
+  }
+
+  void clear() {
+    current = null;
+    voltage1 = null;
+    voltage2 = null;
+    voltage3 = null;
   }
 }
 
