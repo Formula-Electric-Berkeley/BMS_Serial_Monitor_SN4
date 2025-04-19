@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:serial_monitor/constants.dart';
+import 'package:serial_monitor/globals.dart' as globals;
 
 class CarData {
   /// List of cell-related statistics.
@@ -116,11 +117,11 @@ class CarData {
 class CellData {
   static const _defaultVoltage = 0;
   static const _defaultTemperature = 0;
+  static const _defaultIsBalancing = false;
 
   double? voltage;
   double? temperature;
-
-  CellData({this.voltage, this.temperature});
+  bool? isBalancing;
 
   String get stringOfVoltage {
     return (voltage ?? _defaultVoltage).toStringAsFixed(
@@ -148,6 +149,14 @@ class CellData {
 
   bool get isTemperatureSet {
     return temperature != null;
+  }
+
+  bool get isBalancingSet {
+    return isBalancing != null;
+  }
+
+  bool get isBalancingOrDefault {
+    return isBalancing ?? _defaultIsBalancing;
   }
 
   void clear() {
@@ -260,21 +269,39 @@ class IVTData {
   }
 }
 
-/// Return a function that randomizes car data.
+/// Randomize global [CarData] struct.
 ///
 /// Used to test GUI by generating random data.
-/// Returned function can be called periodically to simulate a stream
-/// of data from the car.
-void Function(Timer) randomizeData(CarData carData) {
+/// Randomization occurs periodically, at a set
+/// interval.
+void randomizeData() {
+  CarData carData = globals.carData;
+  Random r = Random();
+
   void f(Timer t) {
-    Random r = Random();
     for (int bank = 0; bank < numBanks; bank++) {
       for (int cell = 0; cell < numCellsPerBank; cell++) {
-        carData.getCell(bank, cell).voltage = r.nextDouble() * 1.8 + 2.45;
-        carData.getCell(bank, cell).temperature = r.nextDouble() * 60;
+        // Cell data
+        CellData cellData = carData.getCell(bank, cell);
+        cellData.voltage = r.nextDouble() * 1.8 + 2.45;
+        cellData.temperature = r.nextDouble() * 60;
+        cellData.isBalancing = r.nextDouble() > 0.9;
+
+        // Relay data
+        RelayData relayData = carData.relayData;
+        relayData.airPlusOpen = r.nextBool();
+        relayData.airMinusOpen = r.nextBool();
+        relayData.prechargeOpen = r.nextBool();
+
+        // IVT data
+        IVTData ivtData = carData.ivtData;
+        ivtData.current = r.nextDouble() * 2 - 1;
+        ivtData.voltage1 = r.nextDouble();
+        ivtData.voltage2 = r.nextDouble();
+        ivtData.voltage3 = r.nextDouble();
       }
     }
   }
 
-  return f;
+  Timer.periodic(Duration(milliseconds: 1000), f);
 }

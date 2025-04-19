@@ -150,7 +150,7 @@ class SerialMonitor {
   }
 
   void _storeCellData(List<String> data) {
-    if (data.length != 5) return;
+    if (data.length != 6) return;
 
     // Bank
     int? bank = int.tryParse(data[1]);
@@ -168,10 +168,14 @@ class SerialMonitor {
     double? temperature = double.tryParse(data[4]);
     if (temperature == null) return;
 
+    bool? isBalancing = bool.tryParse(data[5]);
+    if (isBalancing == null) return;
+
     // Store data
     CellData cellData = _carData.getCell(bank, cell);
     cellData.voltage = voltage;
     cellData.temperature = temperature;
+    cellData.isBalancing = isBalancing;
   }
 
   void _storeRelayData(List<String> data) {

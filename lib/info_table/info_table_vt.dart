@@ -193,6 +193,8 @@ class _VoltageEntry extends _Entry {
     if (cellData.isVoltageSet &&
         (cellData.isUnderVoltage || cellData.isOverVoltage)) {
       return InfoTableColors.outOfRangeBgColor;
+    } else if (cellData.isBalancingSet && cellData.isBalancingOrDefault) {
+      return InfoTableColors.balanceBgColor;
     } else {
       return defaultBgColor;
     }

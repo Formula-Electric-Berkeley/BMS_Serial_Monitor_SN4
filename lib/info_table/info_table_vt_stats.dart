@@ -1,8 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:serial_monitor/car_data.dart';
+import 'package:serial_monitor/globals.dart' as globals;
 import 'package:serial_monitor/info_table/info_table.dart';
 import 'package:serial_monitor/info_table/info_table_entry.dart';
-import 'package:serial_monitor/globals.dart' as globals;
 
 class InfoTableVTStats extends StatefulWidget {
   const InfoTableVTStats({super.key});
@@ -14,6 +16,13 @@ class InfoTableVTStats extends StatefulWidget {
 class _InfoTableVTStatsState extends State<InfoTableVTStats> {
   static const double entryWidth = 180;
   static final PackData packData = globals.carData.packData;
+
+  _InfoTableVTStatsState() {
+    Timer.periodic(
+      Duration(milliseconds: globals.infoTableRefreshRateMs),
+      (_) => setState(() {}),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

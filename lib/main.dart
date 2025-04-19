@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:serial_monitor/car_data.dart';
+import 'package:serial_monitor/info_table/info_table_ivt.dart';
 import 'package:serial_monitor/info_table/info_table_relay.dart';
 import 'package:serial_monitor/info_table/info_table_vt.dart';
-import 'package:serial_monitor/info_table/info_table_ivt.dart';
 import 'package:serial_monitor/info_table/info_table_vt_stats.dart';
 import 'package:serial_monitor/nav_bar.dart';
 
 void main() {
+  randomizeData();
   runApp(MainApp());
 }
 
