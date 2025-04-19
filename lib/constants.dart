@@ -1,13 +1,16 @@
-// Accumulator constants
-const int numBanks = 7;
-const int numCellsPerBank = 20;
-const int voltageDecimalPrecision = 3;
-const int currentDecimalPrecision = 3;
-const int temperatureDecimalPrecision = 1;
-const double minCellVoltage = 2.5;
-const double maxCellVoltage = 4.2;
+/// Global constants
+abstract final class Constants {
+  // Accumulator constants
+  static const int numBanks = 7;
+  static const int numCellsPerBank = 20;
+  static const int voltageDecimalPrecision = 3;
+  static const int currentDecimalPrecision = 3;
+  static const int temperatureDecimalPrecision = 1;
+  static const double minCellVoltage = 2.5;
+  static const double maxCellVoltage = 4.2;
 
-// Serial constants
-const String cellDataSerialId = 'cell';
-const String relayDataSerialId = 'relay';
-const String ivtDataSerialId = 'ivt';
+  // Serial constants
+  static const String cellDataSerialId = 'cell';
+  static const String relayDataSerialId = 'relay';
+  static const String ivtDataSerialId = 'ivt';
+}

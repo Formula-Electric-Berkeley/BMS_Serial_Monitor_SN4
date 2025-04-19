@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:serial_monitor/car_data.dart';
-import 'package:serial_monitor/constants.dart' as constants;
+import 'package:serial_monitor/constants.dart';
 import 'package:serial_monitor/globals.dart' as globals;
 import 'package:serial_monitor/info_table/info_table.dart';
 import 'package:serial_monitor/info_table/info_table_entry.dart';
@@ -18,11 +18,11 @@ class InfoTableVT extends StatefulWidget {
 
 class _InfoTableVTState extends State<InfoTableVT> {
   final List<Color> bankNoBgColor = List.filled(
-    constants.numBanks * 2,
+    Constants.numBanks * 2,
     InfoTableColors.defaultBgColor,
   );
   final List<Color> cellNoBgColor = List.filled(
-    constants.numCellsPerBank,
+    Constants.numCellsPerBank,
     InfoTableColors.defaultBgColor,
   );
 
@@ -41,7 +41,7 @@ class _InfoTableVTState extends State<InfoTableVT> {
   List<Widget> header() {
     return [
       InfoTableEntry(text: 'Cell No.'),
-      ...List.generate(constants.numBanks * 2, (index) {
+      ...List.generate(Constants.numBanks * 2, (index) {
         int bank = index ~/ 2 + 1;
         String entryTypeChar = index % 2 == 0 ? 'V' : 'T';
         return InfoTableEntry(
@@ -54,10 +54,10 @@ class _InfoTableVTState extends State<InfoTableVT> {
 
   List<List<Widget>> body() {
     return List.generate(
-      constants.numCellsPerBank,
+      Constants.numCellsPerBank,
       (cell) => [
         InfoTableEntry(text: '${cell + 1}', bgColor: cellNoBgColor[cell]),
-        ...List.generate(constants.numBanks * 2, (colIndex) {
+        ...List.generate(Constants.numBanks * 2, (colIndex) {
           int bank = colIndex ~/ 2;
           CellData cellData = globals.carData.getCell(bank, cell);
           Color defaultBgColor = defaultBankBgColor(bank);
@@ -123,7 +123,7 @@ class _InfoTableVTState extends State<InfoTableVT> {
   List<Widget> statsTotal() {
     return [
       InfoTableEntry(text: 'Total'),
-      ...List.generate(constants.numBanks * 2, (colIndex) {
+      ...List.generate(Constants.numBanks * 2, (colIndex) {
         int bank = colIndex ~/ 2;
         BankData bankData = globals.carData.getBank(bank);
         Color bgColor = defaultBankBgColor(bank);
@@ -143,7 +143,7 @@ class _InfoTableVTState extends State<InfoTableVT> {
   List<Widget> statsAverage() {
     return [
       InfoTableEntry(text: 'Avg.'),
-      ...List.generate(constants.numBanks * 2, (colIndex) {
+      ...List.generate(Constants.numBanks * 2, (colIndex) {
         int bank = colIndex ~/ 2;
         BankData bankData = globals.carData.getBank(bank);
         Color bgColor = defaultBankBgColor(bank);

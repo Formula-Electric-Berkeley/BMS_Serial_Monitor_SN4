@@ -7,12 +7,15 @@ import 'package:serial_monitor/globals.dart' as globals;
 class CarData {
   /// List of cell-related statistics.
   final List<CellData> _cells = List.generate(
-    numBanks * numCellsPerBank,
+    Constants.numBanks * Constants.numCellsPerBank,
     (_) => CellData(),
   );
 
   /// List of bank-related statistics.
-  final List<BankData> _banks = List.generate(numBanks, (bank) => BankData());
+  final List<BankData> _banks = List.generate(
+    Constants.numBanks,
+    (bank) => BankData(),
+  );
 
   /// Pack-related statistics.
   final PackData packData = PackData();
@@ -29,7 +32,7 @@ class CarData {
 
   /// Get cell statistics.
   CellData getCell(int bank, int cell) {
-    return _cells[bank * numCellsPerBank + cell];
+    return _cells[bank * Constants.numCellsPerBank + cell];
   }
 
   /// Get bank statistics.
@@ -38,7 +41,7 @@ class CarData {
   }
 
   void _update(Timer t) {
-    for (int bank = 0; bank < numBanks; bank++) {
+    for (int bank = 0; bank < Constants.numBanks; bank++) {
       _updateBank(bank);
     }
     _updatePack();
@@ -51,7 +54,7 @@ class CarData {
     int numVoltageCells = 0;
     int numTemperatureCells = 0;
 
-    for (int cell = 0; cell < numCellsPerBank; cell++) {
+    for (int cell = 0; cell < Constants.numCellsPerBank; cell++) {
       CellData cellData = getCell(bank, cell);
 
       // Accumulate cell voltage
@@ -125,22 +128,22 @@ class CellData {
 
   String get stringOfVoltage {
     return (voltage ?? _defaultVoltage).toStringAsFixed(
-      voltageDecimalPrecision,
+      Constants.voltageDecimalPrecision,
     );
   }
 
   String get stringOfTemperature {
     return (temperature ?? _defaultTemperature).toStringAsFixed(
-      temperatureDecimalPrecision,
+      Constants.temperatureDecimalPrecision,
     );
   }
 
   bool get isUnderVoltage {
-    return (voltage ?? _defaultVoltage) < minCellVoltage;
+    return (voltage ?? _defaultVoltage) < Constants.minCellVoltage;
   }
 
   bool get isOverVoltage {
-    return (voltage ?? _defaultVoltage) > maxCellVoltage;
+    return (voltage ?? _defaultVoltage) > Constants.maxCellVoltage;
   }
 
   bool get isVoltageSet {
@@ -173,18 +176,18 @@ class BankData {
   int numTemperatureCells = 0;
 
   String get stringOfTotalVoltage {
-    return totalVoltage.toStringAsFixed(voltageDecimalPrecision);
+    return totalVoltage.toStringAsFixed(Constants.voltageDecimalPrecision);
   }
 
   String get stringOfAverageVoltage {
     return (totalVoltage / numVoltageCells).toStringAsFixed(
-      voltageDecimalPrecision,
+      Constants.voltageDecimalPrecision,
     );
   }
 
   String get stringOfAverageTemperature {
     return (totalTemperature / numTemperatureCells).toStringAsFixed(
-      temperatureDecimalPrecision,
+      Constants.temperatureDecimalPrecision,
     );
   }
 }
@@ -197,14 +200,14 @@ class PackData {
   int numTemperatureCells = 0;
 
   String get stringOfTotalVoltage =>
-      totalVoltage.toStringAsFixed(voltageDecimalPrecision);
+      totalVoltage.toStringAsFixed(Constants.voltageDecimalPrecision);
 
-  String get stringOfAverageVoltage =>
-      (totalVoltage / numVoltageCells).toStringAsFixed(voltageDecimalPrecision);
+  String get stringOfAverageVoltage => (totalVoltage / numVoltageCells)
+      .toStringAsFixed(Constants.voltageDecimalPrecision);
 
   String get stringOfAverageTemperature =>
       (totalTemperature / numTemperatureCells).toStringAsFixed(
-        temperatureDecimalPrecision,
+        Constants.temperatureDecimalPrecision,
       );
 }
 
@@ -243,28 +246,28 @@ class IVTData {
   String get stringOfCurrent {
     double? current = this.current;
     return current != null
-        ? current.toStringAsFixed(currentDecimalPrecision)
+        ? current.toStringAsFixed(Constants.currentDecimalPrecision)
         : '-';
   }
 
   String get stringOfVoltage1 {
     double? voltage1 = this.voltage1;
     return voltage1 != null
-        ? voltage1.toStringAsFixed(voltageDecimalPrecision)
+        ? voltage1.toStringAsFixed(Constants.voltageDecimalPrecision)
         : '-';
   }
 
   String get stringOfVoltage2 {
     double? voltage2 = this.voltage2;
     return voltage2 != null
-        ? voltage2.toStringAsFixed(voltageDecimalPrecision)
+        ? voltage2.toStringAsFixed(Constants.voltageDecimalPrecision)
         : '-';
   }
 
   String get stringOfVoltage3 {
     double? voltage3 = this.voltage3;
     return voltage3 != null
-        ? voltage3.toStringAsFixed(voltageDecimalPrecision)
+        ? voltage3.toStringAsFixed(Constants.voltageDecimalPrecision)
         : '-';
   }
 }
@@ -279,8 +282,8 @@ void randomizeData() {
   Random r = Random();
 
   void f(Timer t) {
-    for (int bank = 0; bank < numBanks; bank++) {
-      for (int cell = 0; cell < numCellsPerBank; cell++) {
+    for (int bank = 0; bank < Constants.numBanks; bank++) {
+      for (int cell = 0; cell < Constants.numCellsPerBank; cell++) {
         // Cell data
         CellData cellData = carData.getCell(bank, cell);
         cellData.voltage = r.nextDouble() * 1.8 + 2.45;

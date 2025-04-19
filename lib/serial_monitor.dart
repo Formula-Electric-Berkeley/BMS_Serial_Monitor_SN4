@@ -136,13 +136,13 @@ class SerialMonitor {
     List<String> splitted = s.split(' ');
     if (splitted.isEmpty) return;
     switch (splitted[0]) {
-      case cellDataSerialId:
+      case Constants.cellDataSerialId:
         _storeCellData(splitted);
         break;
-      case relayDataSerialId:
+      case Constants.relayDataSerialId:
         _storeRelayData(splitted);
         break;
-      case ivtDataSerialId:
+      case Constants.ivtDataSerialId:
         _storeIVTData(splitted);
         break;
       default:
@@ -154,11 +154,11 @@ class SerialMonitor {
 
     // Bank
     int? bank = int.tryParse(data[1]);
-    if (bank == null || bank < 0 || bank >= numBanks) return;
+    if (bank == null || bank < 0 || bank >= Constants.numBanks) return;
 
     // Cell
     int? cell = int.tryParse(data[2]);
-    if (cell == null || cell < 0 || cell >= numCellsPerBank) return;
+    if (cell == null || cell < 0 || cell >= Constants.numCellsPerBank) return;
 
     // Voltage
     double? voltage = double.tryParse(data[3]);
