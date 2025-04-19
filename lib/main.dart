@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:serial_monitor/car_data.dart';
 import 'package:serial_monitor/info_table/info_table_ivt.dart';
 import 'package:serial_monitor/info_table/info_table_relay.dart';
 import 'package:serial_monitor/info_table/info_table_vt.dart';
@@ -24,16 +23,23 @@ class MainApp extends StatelessWidget {
           children: [
             NavBar(),
             Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  InfoTableVT(),
-                  InfoTableVTStats(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [InfoTableRelay(),SizedBox(width: 60), InfoTableIVT()]
-                  ),
-                ],
+              child: Container(
+                color: Colors.white,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    InfoTableVT(),
+                    InfoTableVTStats(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InfoTableRelay(),
+                        SizedBox(width: 60),
+                        InfoTableIVT(),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

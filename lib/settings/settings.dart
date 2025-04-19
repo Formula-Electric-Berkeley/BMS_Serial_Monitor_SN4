@@ -21,6 +21,7 @@ class _AppSettingsState extends State<AppSettings> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(),
       contentPadding: EdgeInsets.all(20),
       content: IntrinsicHeight(
@@ -55,6 +56,8 @@ class _AppSettingsState extends State<AppSettings> {
 class _AppSettingsNavigator extends StatelessWidget {
   final _SettingPage currSettingPage;
   final void Function() Function(_SettingPage) updateSettingPageCallback;
+  final Color selectedColor = Colors.orange;
+  final Color unselectedColor = Colors.white;
 
   const _AppSettingsNavigator(
     this.currSettingPage,
@@ -74,8 +77,8 @@ class _AppSettingsNavigator extends StatelessWidget {
             text: 'Serial Port',
             backgroundColor:
                 currSettingPage == _SettingPage.serialPort
-                    ? Colors.orange
-                    : Colors.white,
+                    ? selectedColor
+                    : unselectedColor,
             onPressed: updateSettingPageCallback(_SettingPage.serialPort),
           ),
 
@@ -84,8 +87,8 @@ class _AppSettingsNavigator extends StatelessWidget {
             text: 'Info Table',
             backgroundColor:
                 currSettingPage == _SettingPage.infoTable
-                    ? Colors.orange
-                    : Colors.white,
+                    ? selectedColor
+                    : unselectedColor,
             onPressed: updateSettingPageCallback(_SettingPage.infoTable),
           ),
         ],
