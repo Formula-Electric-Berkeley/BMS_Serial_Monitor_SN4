@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:serial_monitor/constants.dart';
 import 'package:serial_monitor/globals.dart' as globals;
 
@@ -167,6 +168,7 @@ class CellData {
   void clear() {
     voltage = null;
     temperature = null;
+    isBalancing = null;
   }
 }
 
@@ -290,13 +292,11 @@ class IVTData {
 /// Randomize global [CarData] struct.
 ///
 /// Used to test GUI by generating random data.
-/// Randomization occurs periodically, at a set
-/// interval.
-void randomizeData() {
+VoidCallback randomizeCarData() {
   CarData carData = globals.carData;
   Random r = Random();
 
-  void f(Timer t) {
+  void f() {
     for (int bank = 0; bank < Constants.numBanks; bank++) {
       for (int cell = 0; cell < Constants.numCellsPerBank; cell++) {
         // Cell data
@@ -321,5 +321,5 @@ void randomizeData() {
     }
   }
 
-  Timer.periodic(Duration(milliseconds: 1000), f);
+  return f;
 }

@@ -7,7 +7,6 @@ import 'package:serial_monitor/info_table/info_table_vt_stats.dart';
 import 'package:serial_monitor/nav_bar.dart';
 
 void main() {
-  randomizeData();
   runApp(MainApp());
 }
 
