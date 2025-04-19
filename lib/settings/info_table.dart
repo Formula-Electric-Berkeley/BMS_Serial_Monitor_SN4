@@ -12,6 +12,7 @@ class _InfoTableSettingsState extends State<InfoTableSettings> {
   bool highlightCellLocation = globals.highlightCellLocation;
   bool highlightInvalidVoltage = globals.highlightInvalidVoltage;
   bool highlightInvalidTemperature = globals.highlightInvalidTemperature;
+  bool highlightBalancingCells = globals.highlightBalancingCells;
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +62,19 @@ class _InfoTableSettingsState extends State<InfoTableSettings> {
                 Text('Highlight out of range temperature'),
               ],
             ),
+            Row(
+              children: [
+                _SettingsCheckbox(
+                  isChecked: highlightBalancingCells,
+                  onChanged: (bool? value) {
+                    if (value != null) {
+                      setState(() => highlightBalancingCells = value);
+                    }
+                  },
+                ),
+                Text('Highlight balancing cells'),
+              ],
+            ),
           ],
         ),
 
@@ -70,6 +84,7 @@ class _InfoTableSettingsState extends State<InfoTableSettings> {
             globals.highlightCellLocation = highlightCellLocation;
             globals.highlightInvalidVoltage = highlightInvalidVoltage;
             globals.highlightInvalidTemperature = highlightInvalidTemperature;
+            globals.highlightBalancingCells = highlightBalancingCells;
             Navigator.pop(context);
           },
           style: TextButton.styleFrom(

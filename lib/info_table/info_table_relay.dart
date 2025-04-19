@@ -2,9 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:serial_monitor/car_data.dart';
+import 'package:serial_monitor/constants.dart';
+import 'package:serial_monitor/globals.dart' as globals;
 import 'package:serial_monitor/info_table/info_table.dart';
 import 'package:serial_monitor/info_table/info_table_entry.dart';
-import 'package:serial_monitor/globals.dart' as globals;
 
 /// [InfoTable] for relays.
 class InfoTableRelay extends StatefulWidget {
@@ -20,7 +21,7 @@ class _InfoTableRelayState extends State<InfoTableRelay> {
 
   _InfoTableRelayState() {
     Timer.periodic(
-      Duration(milliseconds: globals.infoTableRefreshRateMs),
+      Duration(milliseconds: Constants.infoTableRefreshRateMs),
       (_) => setState(() {}),
     );
   }

@@ -28,7 +28,7 @@ class _InfoTableVTState extends State<InfoTableVT> {
 
   _InfoTableVTState() {
     Timer.periodic(
-      Duration(milliseconds: globals.infoTableRefreshRateMs),
+      Duration(milliseconds: Constants.infoTableRefreshRateMs),
       (_) => setState(() {}),
     );
   }
@@ -190,10 +190,13 @@ class _VoltageEntry extends _Entry {
 
   @override
   Color get bgColor {
-    if (cellData.isVoltageSet &&
+    if (globals.highlightInvalidVoltage &&
+        cellData.isVoltageSet &&
         (cellData.isUnderVoltage || cellData.isOverVoltage)) {
       return InfoTableColors.outOfRangeBgColor;
-    } else if (cellData.isBalancingSet && cellData.isBalancingOrDefault) {
+    } else if (globals.highlightBalancingCells &&
+        cellData.isBalancingSet &&
+        cellData.isBalancingOrDefault) {
       return InfoTableColors.balanceBgColor;
     } else {
       return defaultBgColor;
