@@ -32,14 +32,11 @@ class CarData {
   }
 
   /// Get cell statistics.
-  CellData getCell(int bank, int cell) {
-    return _cells[bank * Constants.numCellsPerBank + cell];
-  }
+  CellData getCell(int bank, int cell) =>
+      _cells[bank * Constants.numCellsPerBank + cell];
 
   /// Get bank statistics.
-  BankData getBank(int bank) {
-    return _banks[bank];
-  }
+  BankData getBank(int bank) => _banks[bank];
 
   void _update(Timer t) {
     for (int bank = 0; bank < Constants.numBanks; bank++) {
@@ -59,16 +56,14 @@ class CarData {
       CellData cellData = getCell(bank, cell);
 
       // Accumulate cell voltage
-      double? cellVoltage = cellData.voltage;
-      if (cellVoltage != null) {
-        totalVoltage += cellVoltage;
+      if (cellData.isVoltageSet) {
+        totalVoltage += cellData.voltage;
         numVoltageCells++;
       }
 
       // Accumulate cell temperature
-      double? cellTemperature = cellData.temperature;
-      if (cellTemperature != null) {
-        totalTemperature += cellTemperature;
+      if (cellData.isTemperatureSet) {
+        totalTemperature += cellData.temperature;
         numTemperatureCells++;
       }
     }
@@ -121,54 +116,36 @@ class CarData {
 
 /// Cell-related statistics.
 class CellData {
-  static const _defaultVoltage = 0;
-  static const _defaultTemperature = 0;
-  static const _defaultIsBalancing = false;
+  static const double _defaultVoltage = 0;
+  static const double _defaultTemperature = 0;
+  static const bool _defaultIsBalancing = false;
 
-  double? voltage;
-  double? temperature;
-  bool? isBalancing;
+  double? _voltage;
+  double? _temperature;
+  bool? _isBalancing;
 
-  String get stringOfVoltage {
-    return (voltage ?? _defaultVoltage).toStringAsFixed(
-      Constants.voltageDecimalPrecision,
-    );
-  }
+  double get voltage => (_voltage ?? _defaultVoltage);
+  set voltage(double value) => _voltage = value;
+  bool get isVoltageSet => _voltage != null;
+  String get stringOfVoltage =>
+      voltage.toStringAsFixed(Constants.voltageDecimalPrecision);
+  bool get isUnderVoltage => voltage < Constants.minCellVoltage;
+  bool get isOverVoltage => voltage > Constants.maxCellVoltage;
 
-  String get stringOfTemperature {
-    return (temperature ?? _defaultTemperature).toStringAsFixed(
-      Constants.temperatureDecimalPrecision,
-    );
-  }
+  double get temperature => (_temperature ?? _defaultTemperature);
+  set temperature(double value) => _temperature = value;
+  bool get isTemperatureSet => _temperature != null;
+  String get stringOfTemperature =>
+      temperature.toStringAsFixed(Constants.temperatureDecimalPrecision);
 
-  bool get isUnderVoltage {
-    return (voltage ?? _defaultVoltage) < Constants.minCellVoltage;
-  }
-
-  bool get isOverVoltage {
-    return (voltage ?? _defaultVoltage) > Constants.maxCellVoltage;
-  }
-
-  bool get isVoltageSet {
-    return voltage != null;
-  }
-
-  bool get isTemperatureSet {
-    return temperature != null;
-  }
-
-  bool get isBalancingSet {
-    return isBalancing != null;
-  }
-
-  bool get isBalancingOrDefault {
-    return isBalancing ?? _defaultIsBalancing;
-  }
+  bool get isBalancing => (_isBalancing ?? _defaultIsBalancing);
+  set isBalancing(bool value) => _isBalancing = value;
+  bool get isBalancingSet => _isBalancing != null;
 
   void clear() {
-    voltage = null;
-    temperature = null;
-    isBalancing = null;
+    _voltage = null;
+    _temperature = null;
+    _isBalancing = null;
   }
 }
 
@@ -179,114 +156,79 @@ class BankData {
   int numVoltageCells = 0;
   int numTemperatureCells = 0;
 
-  String get stringOfTotalVoltage {
-    return totalVoltage.toStringAsFixed(Constants.voltageDecimalPrecision);
-  }
+  double get averageVoltage => totalVoltage / numVoltageCells;
 
-  String get stringOfAverageVoltage {
-    return (totalVoltage / numVoltageCells).toStringAsFixed(
-      Constants.voltageDecimalPrecision,
-    );
-  }
-
-  String get stringOfAverageTemperature {
-    return (totalTemperature / numTemperatureCells).toStringAsFixed(
-      Constants.temperatureDecimalPrecision,
-    );
-  }
-}
-
-/// Pack-related statistics.
-class PackData {
-  double totalVoltage = 0;
-  double totalTemperature = 0;
-  int numVoltageCells = 0;
-  int numTemperatureCells = 0;
+  double get averageTemperature => totalTemperature / numTemperatureCells;
 
   String get stringOfTotalVoltage =>
       totalVoltage.toStringAsFixed(Constants.voltageDecimalPrecision);
 
-  String get stringOfAverageVoltage => (totalVoltage / numVoltageCells)
-      .toStringAsFixed(Constants.voltageDecimalPrecision);
+  String get stringOfAverageVoltage =>
+      averageVoltage.toStringAsFixed(Constants.voltageDecimalPrecision);
 
   String get stringOfAverageTemperature =>
-      (totalTemperature / numTemperatureCells).toStringAsFixed(
-        Constants.temperatureDecimalPrecision,
-      );
+      averageTemperature.toStringAsFixed(Constants.temperatureDecimalPrecision);
 }
+
+/// Pack-related statistics.
+class PackData extends BankData {}
 
 /// Relay state.
 class RelayData {
-  bool? airPlusOpen;
-  bool? airMinusOpen;
-  bool? prechargeOpen;
+  bool? _airPlusOpen;
+  bool? _airMinusOpen;
+  bool? _prechargeOpen;
 
-  String get stringOfAirPlus => switch (airPlusOpen) {
-    true => 'Open',
-    false => 'Close',
-    _ => '-',
-  };
+  String get stringOfAirPlus => _stringOfRelay(_airPlusOpen);
+  set airPlusOpen(bool value) => _airPlusOpen = value;
 
-  String get stringOfAirMinus => switch (airMinusOpen) {
-    true => 'Open',
-    false => 'Close',
-    _ => '-',
-  };
+  String get stringOfAirMinus => _stringOfRelay(_airMinusOpen);
+  set airMinusOpen(bool value) => _airMinusOpen = value;
 
-  String get stringOfPrecharge => switch (prechargeOpen) {
+  String get stringOfPrecharge => _stringOfRelay(_prechargeOpen);
+  set prechargeOpen(bool value) => _prechargeOpen = value;
+
+  String _stringOfRelay(bool? open) => switch (open) {
     true => 'Open',
     false => 'Close',
     _ => '-',
   };
 
   void clear() {
-    airPlusOpen = null;
-    airMinusOpen = null;
-    prechargeOpen = null;
+    _airPlusOpen = null;
+    _airMinusOpen = null;
+    _prechargeOpen = null;
   }
 }
 
 /// IVT data.
 class IVTData {
-  double? current;
-  double? voltage1;
-  double? voltage2;
-  double? voltage3;
+  double? _current;
+  double? _voltage1;
+  double? _voltage2;
+  double? _voltage3;
 
-  String get stringOfCurrent {
-    double? current = this.current;
-    return current != null
-        ? current.toStringAsFixed(Constants.currentDecimalPrecision)
-        : '-';
-  }
+  set current(double value) => _current = value;
+  set voltage1(double value) => _voltage1 = value;
+  set voltage2(double value) => _voltage2 = value;
+  set voltage3(double value) => _voltage3 = value;
 
-  String get stringOfVoltage1 {
-    double? voltage1 = this.voltage1;
-    return voltage1 != null
-        ? voltage1.toStringAsFixed(Constants.voltageDecimalPrecision)
-        : '-';
-  }
-
-  String get stringOfVoltage2 {
-    double? voltage2 = this.voltage2;
-    return voltage2 != null
-        ? voltage2.toStringAsFixed(Constants.voltageDecimalPrecision)
-        : '-';
-  }
-
-  String get stringOfVoltage3 {
-    double? voltage3 = this.voltage3;
-    return voltage3 != null
-        ? voltage3.toStringAsFixed(Constants.voltageDecimalPrecision)
-        : '-';
-  }
+  String get stringOfCurrent => _stringOfDouble(_current);
+  String get stringOfVoltage1 => _stringOfDouble(_voltage1);
+  String get stringOfVoltage2 => _stringOfDouble(_voltage2);
+  String get stringOfVoltage3 => _stringOfDouble(_voltage3);
 
   void clear() {
-    current = null;
-    voltage1 = null;
-    voltage2 = null;
-    voltage3 = null;
+    _current = null;
+    _voltage1 = null;
+    _voltage2 = null;
+    _voltage3 = null;
   }
+
+  String _stringOfDouble(double? value) =>
+      (value != null)
+          ? value.toStringAsFixed(Constants.voltageDecimalPrecision)
+          : '-';
 }
 
 /// Randomize global [CarData] struct.
@@ -301,22 +243,22 @@ VoidCallback randomizeCarData() {
       for (int cell = 0; cell < Constants.numCellsPerBank; cell++) {
         // Cell data
         CellData cellData = carData.getCell(bank, cell);
-        cellData.voltage = r.nextDouble() * 1.8 + 2.45;
-        cellData.temperature = r.nextDouble() * 60;
-        cellData.isBalancing = r.nextDouble() > 0.9;
+        cellData._voltage = r.nextDouble() * 1.8 + 2.45;
+        cellData._temperature = r.nextDouble() * 60;
+        cellData._isBalancing = r.nextDouble() > 0.9;
 
         // Relay data
         RelayData relayData = carData.relayData;
-        relayData.airPlusOpen = r.nextBool();
-        relayData.airMinusOpen = r.nextBool();
-        relayData.prechargeOpen = r.nextBool();
+        relayData._airPlusOpen = r.nextBool();
+        relayData._airMinusOpen = r.nextBool();
+        relayData._prechargeOpen = r.nextBool();
 
         // IVT data
         IVTData ivtData = carData.ivtData;
-        ivtData.current = r.nextDouble() * 2 - 1;
-        ivtData.voltage1 = r.nextDouble();
-        ivtData.voltage2 = r.nextDouble();
-        ivtData.voltage3 = r.nextDouble();
+        ivtData._current = r.nextDouble() * 2 - 1;
+        ivtData._voltage1 = r.nextDouble();
+        ivtData._voltage2 = r.nextDouble();
+        ivtData._voltage3 = r.nextDouble();
       }
     }
   }

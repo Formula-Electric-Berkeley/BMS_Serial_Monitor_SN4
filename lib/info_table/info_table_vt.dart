@@ -34,7 +34,7 @@ class _InfoTableVTState extends State<InfoTableVT> {
   }
 
   /// Default background color for every bank.
-  /// 
+  ///
   /// Used for alternating colors between banks.
   Color defaultBankBgColor(int bank) =>
       bank % 2 == 0
@@ -87,7 +87,7 @@ class _InfoTableVTState extends State<InfoTableVT> {
   }
 
   /// On mouse entry, set background color of cell number and bank number.
-  /// 
+  ///
   /// Returns a function that can be called on mouse entry.
   void Function(PointerEnterEvent) bodyEntryOnEnter(int cell, int colIndex) {
     void f(PointerEnterEvent event) {
@@ -114,7 +114,7 @@ class _InfoTableVTState extends State<InfoTableVT> {
   }
 
   /// On mouse exit, set background color of cell number and bank number.
-  /// 
+  ///
   /// Returns a function that can be called on mouse exit.
   void Function(PointerExitEvent) bodyEntryOnExit(int cell, int colIndex) {
     void f(PointerExitEvent event) {
@@ -132,7 +132,7 @@ class _InfoTableVTState extends State<InfoTableVT> {
   }
 
   /// Bank statistics (total) widgets.
-  /// 
+  ///
   /// Widgets for total voltage in a bank.
   List<Widget> statsTotal() {
     return [
@@ -155,7 +155,7 @@ class _InfoTableVTState extends State<InfoTableVT> {
   }
 
   /// Bank statistics (average) widgets.
-  /// 
+  ///
   /// Widgets for average cell voltage and average
   /// cell temperature in a bank.
   List<Widget> statsAverage() {
@@ -216,7 +216,7 @@ class _VoltageEntry extends _Entry {
       return InfoTableColors.outOfRangeBgColor;
     } else if (globals.highlightBalancingCells &&
         cellData.isBalancingSet &&
-        cellData.isBalancingOrDefault) {
+        cellData.isBalancing) {
       return InfoTableColors.balanceBgColor;
     } else {
       return defaultBgColor;
