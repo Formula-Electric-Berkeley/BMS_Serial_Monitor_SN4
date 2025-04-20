@@ -11,6 +11,7 @@ Cell Data
 - \<int cell>
 - \<int bank>
 - \<float voltage>
+- \<float redundant voltage>
 - \<float temperature>
 - \<bool balance>
 

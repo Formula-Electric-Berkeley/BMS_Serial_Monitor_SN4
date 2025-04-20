@@ -243,7 +243,11 @@ VoidCallback randomizeCarData() {
       for (int cell = 0; cell < Constants.numCellsPerBank; cell++) {
         // Cell data
         CellData cellData = carData.getCell(bank, cell);
-        cellData._voltage = r.nextDouble() * 1.8 + 2.45;
+        if (!globals.useRedundantVoltage) {
+          cellData._voltage = r.nextDouble() * 1.8 + 2.45;
+        } else {
+          cellData._voltage = 3;
+        }
         cellData._temperature = r.nextDouble() * 60;
         cellData._isBalancing = r.nextDouble() > 0.9;
 

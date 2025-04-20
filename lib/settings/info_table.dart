@@ -9,6 +9,7 @@ class InfoTableSettings extends StatefulWidget {
 }
 
 class _InfoTableSettingsState extends State<InfoTableSettings> {
+  bool useRedundantVoltage = globals.useRedundantVoltage;
   bool highlightCellLocation = globals.highlightCellLocation;
   bool highlightInvalidVoltage = globals.highlightInvalidVoltage;
   bool highlightInvalidTemperature = globals.highlightInvalidTemperature;
@@ -23,6 +24,19 @@ class _InfoTableSettingsState extends State<InfoTableSettings> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Row(
+              children: [
+                _SettingsCheckbox(
+                  isChecked: useRedundantVoltage,
+                  onChanged: (bool? value) {
+                    if (value != null) {
+                      setState(() => useRedundantVoltage = value);
+                    }
+                  },
+                ),
+                Text('Display redundant voltage'),
+              ],
+            ),
             Row(
               children: [
                 _SettingsCheckbox(
@@ -81,6 +95,7 @@ class _InfoTableSettingsState extends State<InfoTableSettings> {
         // Configure
         TextButton(
           onPressed: () {
+            globals.useRedundantVoltage = useRedundantVoltage;
             globals.highlightCellLocation = highlightCellLocation;
             globals.highlightInvalidVoltage = highlightInvalidVoltage;
             globals.highlightInvalidTemperature = highlightInvalidTemperature;

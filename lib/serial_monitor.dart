@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter_libserialport/flutter_libserialport.dart';
 import 'package:serial_monitor/car_data.dart';
 import 'package:serial_monitor/constants.dart';
+import 'package:serial_monitor/globals.dart' as globals;
 
 class SerialMonitor {
   List<String> _availablePorts = SerialPort.availablePorts;
@@ -151,7 +152,7 @@ class SerialMonitor {
   }
 
   void _storeCellData(List<String> data) {
-    if (data.length != 6) return;
+    if (data.length != 7) return;
 
     // Bank
     int? bank = int.tryParse(data[1]);
@@ -162,14 +163,19 @@ class SerialMonitor {
     if (cell == null || cell < 0 || cell >= Constants.numCellsPerBank) return;
 
     // Voltage
-    double? voltage = double.tryParse(data[3]);
+    double? voltage;
+    if (!globals.useRedundantVoltage) {
+      voltage = double.tryParse(data[3]);
+    } else {
+      voltage = double.tryParse(data[4]);
+    }
     if (voltage == null) return;
 
     // Temperature
-    double? temperature = double.tryParse(data[4]);
+    double? temperature = double.tryParse(data[5]);
     if (temperature == null) return;
 
-    bool? isBalancing = bool.tryParse(data[5]);
+    bool? isBalancing = bool.tryParse(data[6]);
     if (isBalancing == null) return;
 
     // Store data
