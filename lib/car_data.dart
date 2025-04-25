@@ -175,18 +175,13 @@ class PackData extends BankData {}
 
 /// Relay state.
 class RelayData {
-  bool? _airPlusOpen;
-  bool? _airMinusOpen;
-  bool? _prechargeOpen;
+  bool? airPlusOpen;
+  bool? airMinusOpen;
+  bool? prechargeOpen;
 
-  String get stringOfAirPlus => _stringOfRelay(_airPlusOpen);
-  set airPlusOpen(bool value) => _airPlusOpen = value;
-
-  String get stringOfAirMinus => _stringOfRelay(_airMinusOpen);
-  set airMinusOpen(bool value) => _airMinusOpen = value;
-
-  String get stringOfPrecharge => _stringOfRelay(_prechargeOpen);
-  set prechargeOpen(bool value) => _prechargeOpen = value;
+  String get stringOfAirPlus => _stringOfRelay(airPlusOpen);
+  String get stringOfAirMinus => _stringOfRelay(airMinusOpen);
+  String get stringOfPrecharge => _stringOfRelay(prechargeOpen);
 
   String _stringOfRelay(bool? open) => switch (open) {
     true => 'Open',
@@ -195,9 +190,9 @@ class RelayData {
   };
 
   void clear() {
-    _airPlusOpen = null;
-    _airMinusOpen = null;
-    _prechargeOpen = null;
+    airPlusOpen = null;
+    airMinusOpen = null;
+    prechargeOpen = null;
   }
 }
 
@@ -253,9 +248,9 @@ VoidCallback randomizeCarData() {
 
         // Relay data
         RelayData relayData = carData.relayData;
-        relayData._airPlusOpen = r.nextBool();
-        relayData._airMinusOpen = r.nextBool();
-        relayData._prechargeOpen = r.nextBool();
+        relayData.airPlusOpen = r.nextBool();
+        relayData.airMinusOpen = r.nextBool();
+        relayData.prechargeOpen = r.nextBool();
 
         // IVT data
         IVTData ivtData = carData.ivtData;

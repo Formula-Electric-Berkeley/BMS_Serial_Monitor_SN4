@@ -26,6 +26,12 @@ class _InfoTableRelayState extends State<InfoTableRelay> {
     );
   }
 
+  Color bgColor(bool? isOpen) => switch (isOpen) {
+    true => InfoTableColors.relayOpenBgColor,
+    false => InfoTableColors.relayClosedBgColor,
+    _ => InfoTableColors.defaultBgColor,
+  };
+
   @override
   Widget build(BuildContext context) {
     return InfoTable(
@@ -36,9 +42,18 @@ class _InfoTableRelayState extends State<InfoTableRelay> {
           InfoTableEntry(text: 'Precharge', width: entryWidth),
         ],
         [
-          InfoTableEntry(text: relayData.stringOfAirPlus),
-          InfoTableEntry(text: relayData.stringOfAirMinus),
-          InfoTableEntry(text: relayData.stringOfPrecharge),
+          InfoTableEntry(
+            text: relayData.stringOfAirPlus,
+            bgColor: bgColor(relayData.airPlusOpen),
+          ),
+          InfoTableEntry(
+            text: relayData.stringOfAirMinus,
+            bgColor: bgColor(relayData.airMinusOpen),
+          ),
+          InfoTableEntry(
+            text: relayData.stringOfPrecharge,
+            bgColor: bgColor(relayData.prechargeOpen),
+          ),
         ],
       ],
     );

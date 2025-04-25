@@ -10,6 +10,8 @@ abstract final class InfoTableColors {
   static const Color outOfRangeBgColor = Colors.red;
   static const Color locateBgColor = Colors.orange;
   static const Color balanceBgColor = Colors.blue;
+  static const Color relayOpenBgColor = Colors.green;
+  static const Color relayClosedBgColor = Colors.red;
 
   // Text colors
   static const Color defaultTextColor = Colors.black;
