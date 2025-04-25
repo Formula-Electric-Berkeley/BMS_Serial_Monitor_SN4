@@ -8,8 +8,8 @@ Design inspired by CoolTerm serial monitor app on MacOS.
 
 Cell Data
 - cell
-- \<int cell>
 - \<int bank>
+- \<int cell>
 - \<float voltage>
 - \<float redundant voltage>
 - \<float temperature>

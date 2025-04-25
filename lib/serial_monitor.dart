@@ -175,6 +175,7 @@ class SerialMonitor {
     double? temperature = double.tryParse(data[5]);
     if (temperature == null) return;
 
+    // Balance
     bool? isBalancing = bool.tryParse(data[6]);
     if (isBalancing == null) return;
 
