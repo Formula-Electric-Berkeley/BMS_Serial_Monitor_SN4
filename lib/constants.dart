@@ -8,6 +8,10 @@ abstract final class Constants {
   static const int temperatureDecimalPrecision = 1;
   static const double minCellVoltage = 2.5;
   static const double maxCellVoltage = 4.2;
+  static const double minCellTemperatureDischarge = -20;
+  static const double maxCellTemperatureDischarge = 60;
+  static const double minCellTemperatureCharge = 0;
+  static const double maxCellTemperatureCharge = 45;
 
   // Serial
   static const String cellDataSerialId = 'cell';

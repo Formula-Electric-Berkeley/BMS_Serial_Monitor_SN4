@@ -76,10 +76,14 @@ class _InfoTableVTState extends State<InfoTableVT> {
                     cellData: cellData,
                     defaultBgColor: defaultBgColor,
                   );
+          VoidCallback onDoubleTap =
+              colIndex % 2 == 0
+                  ? toggleDisableVoltage(cellData)
+                  : toggleDisableTemperature(cellData);
           return MouseRegion(
             onEnter: bodyEntryOnEnter(cell, colIndex),
             onExit: bodyEntryOnExit(cell, colIndex),
-            child: entry,
+            child: GestureDetector(onDoubleTap: onDoubleTap, child: entry),
           );
         }),
       ],
@@ -130,6 +134,14 @@ class _InfoTableVTState extends State<InfoTableVT> {
 
     return f;
   }
+
+  /// Return a function to toggle a cell's disable voltage.
+  VoidCallback toggleDisableVoltage(CellData cellData) =>
+      () => cellData.disableVoltage = !cellData.disableVoltage;
+
+  /// Return a function to toggle a cell's disable temperature.
+  VoidCallback toggleDisableTemperature(CellData cellData) =>
+      () => cellData.disableTemperature = !cellData.disableTemperature;
 
   /// Bank statistics (total) widgets.
   ///
@@ -210,22 +222,27 @@ class _VoltageEntry extends _Entry {
 
   @override
   Color get bgColor {
+    if (cellData.disableVoltage) {
+      return defaultBgColor;
+    }
+
+    Color bgColor = defaultBgColor;
     if (globals.highlightInvalidVoltage &&
         cellData.isVoltageSet &&
         (cellData.isUnderVoltage || cellData.isOverVoltage)) {
-      return InfoTableColors.outOfRangeBgColor;
+      bgColor = InfoTableColors.outOfRangeBgColor;
     } else if (globals.highlightBalancingCells &&
         cellData.isBalancingSet &&
         cellData.isBalancing) {
-      return InfoTableColors.balanceBgColor;
-    } else {
-      return defaultBgColor;
+      bgColor = InfoTableColors.balanceBgColor;
     }
+
+    return bgColor;
   }
 
   @override
   Color get textColor =>
-      cellData.isVoltageSet
+      cellData.isVoltageSet && !cellData.disableVoltage
           ? InfoTableColors.defaultTextColor
           : InfoTableColors.disabledTextColor;
 }
@@ -242,13 +259,23 @@ class _TemperatureEntry extends _Entry {
 
   @override
   Color get bgColor {
-    // TODO: Implement
-    return defaultBgColor;
+    if (cellData.disableTemperature) {
+      return defaultBgColor;
+    }
+
+    Color bgColor = defaultBgColor;
+    if (globals.highlightInvalidTemperature &&
+        cellData.isTemperatureSet &&
+        (cellData.isUnderTemperature || cellData.isOverTemperature)) {
+      bgColor = InfoTableColors.outOfRangeBgColor;
+    }
+
+    return bgColor;
   }
 
   @override
   Color get textColor =>
-      cellData.isTemperatureSet
+      cellData.isTemperatureSet && !cellData.disableTemperature
           ? InfoTableColors.defaultTextColor
           : InfoTableColors.disabledTextColor;
 }

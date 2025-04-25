@@ -56,13 +56,13 @@ class CarData {
       CellData cellData = getCell(bank, cell);
 
       // Accumulate cell voltage
-      if (cellData.isVoltageSet) {
+      if (cellData.isVoltageSet && !cellData.disableVoltage) {
         totalVoltage += cellData.voltage;
         numVoltageCells++;
       }
 
       // Accumulate cell temperature
-      if (cellData.isTemperatureSet) {
+      if (cellData.isTemperatureSet && !cellData.disableTemperature) {
         totalTemperature += cellData.temperature;
         numTemperatureCells++;
       }
@@ -121,7 +121,9 @@ class CellData {
   static const bool _defaultIsBalancing = false;
 
   double? _voltage;
+  bool disableVoltage = false;
   double? _temperature;
+  bool disableTemperature = false;
   bool? _isBalancing;
 
   double get voltage => (_voltage ?? _defaultVoltage);
@@ -137,6 +139,16 @@ class CellData {
   bool get isTemperatureSet => _temperature != null;
   String get stringOfTemperature =>
       temperature.toStringAsFixed(Constants.temperatureDecimalPrecision);
+  bool get isUnderTemperature =>
+      temperature <
+      (globals.charging
+          ? Constants.minCellTemperatureCharge
+          : Constants.minCellTemperatureDischarge);
+  bool get isOverTemperature =>
+      temperature >
+      (globals.charging
+          ? Constants.maxCellTemperatureCharge
+          : Constants.maxCellTemperatureDischarge);
 
   bool get isBalancing => (_isBalancing ?? _defaultIsBalancing);
   set isBalancing(bool value) => _isBalancing = value;
@@ -243,7 +255,7 @@ VoidCallback randomizeCarData() {
         } else {
           cellData._voltage = 3;
         }
-        cellData._temperature = r.nextDouble() * 60;
+        cellData._temperature = r.nextDouble() * 90 - 25;
         cellData._isBalancing = r.nextDouble() > 0.9;
 
         // Relay data

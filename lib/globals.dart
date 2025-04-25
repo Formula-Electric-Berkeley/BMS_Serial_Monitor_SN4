@@ -5,6 +5,9 @@ import 'package:serial_monitor/serial_monitor.dart';
 final CarData carData = CarData();
 final SerialMonitor serialMonitor = SerialMonitor(carData);
 
+// Accumulator
+bool charging = false;
+
 // Info table
 bool useRedundantVoltage = false;
 bool highlightCellLocation = true;
