@@ -145,6 +145,13 @@ class CarData {
     relayData.clear();
     ivtData.clear();
   }
+
+  /// Enable all cell voltage and temperature readings.
+  void enable() {
+    for (CellData cellData in _cells) {
+      cellData.enable();
+    }
+  }
 }
 
 /// Cell-related statistics.
@@ -187,10 +194,17 @@ class CellData {
   set isBalancing(bool value) => _isBalancing = value;
   bool get isBalancingSet => _isBalancing != null;
 
+  /// Clear cell statistics.
   void clear() {
     _voltage = null;
     _temperature = null;
     _isBalancing = null;
+  }
+
+  /// Enable voltage and temperature readings.
+  void enable() {
+    disableVoltage = false;
+    disableTemperature = false;
   }
 }
 

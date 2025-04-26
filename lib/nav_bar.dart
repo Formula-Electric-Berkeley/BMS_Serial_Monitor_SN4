@@ -48,6 +48,19 @@ class NavBar extends StatelessWidget {
             ),
           ),
 
+          SizedBox(
+            width: _buttonWidth,
+            child: TextButton.icon(
+              label: Text('Enable All'),
+              icon: Icon(Icons.show_chart),
+              onPressed: globals.carData.enable,
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.black,
+                shape: RoundedRectangleBorder(),
+              ),
+            ),
+          ),
+
           // Toggle debug mode
           SizedBox(width: _buttonWidth, child: _DebugModeButton()),
         ],
