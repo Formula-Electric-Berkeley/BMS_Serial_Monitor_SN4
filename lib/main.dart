@@ -26,16 +26,23 @@ class MainApp extends StatelessWidget {
               child: Container(
                 color: Colors.white,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                    SizedBox(height: 30),
                     InfoTableVT(),
-                    InfoTableVTStats(),
+                    SizedBox(height: 30),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        InfoTableRelay(),
-                        SizedBox(width: 60),
-                        InfoTableIVT(),
+                        InfoTableVTStats(),
+                        SizedBox(width:90),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            InfoTableRelay(),
+                            SizedBox(height: 20),
+                            InfoTableIVT(),
+                          ],
+                        ),
                       ],
                     ),
                   ],

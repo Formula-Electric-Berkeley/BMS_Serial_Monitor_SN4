@@ -51,6 +51,10 @@ class CarData {
     double totalTemperature = 0;
     int numVoltageCells = 0;
     int numTemperatureCells = 0;
+    double minVoltage = double.infinity;
+    double maxVoltage = double.negativeInfinity;
+    double minTemperature = double.infinity;
+    double maxTemperature = double.negativeInfinity;
 
     for (int cell = 0; cell < Constants.numCellsPerBank; cell++) {
       CellData cellData = getCell(bank, cell);
@@ -59,12 +63,16 @@ class CarData {
       if (cellData.isVoltageSet && !cellData.disableVoltage) {
         totalVoltage += cellData.voltage;
         numVoltageCells++;
+        minVoltage = min(minVoltage, cellData.voltage);
+        maxVoltage = max(maxVoltage, cellData.voltage);
       }
 
       // Accumulate cell temperature
       if (cellData.isTemperatureSet && !cellData.disableTemperature) {
         totalTemperature += cellData.temperature;
         numTemperatureCells++;
+        minTemperature = min(minTemperature, cellData.temperature);
+        maxTemperature = max(maxTemperature, cellData.temperature);
       }
     }
 
@@ -74,6 +82,10 @@ class CarData {
     bankData.totalTemperature = totalTemperature;
     bankData.numVoltageCells = numVoltageCells;
     bankData.numTemperatureCells = numTemperatureCells;
+    bankData.minVoltage = numVoltageCells > 0 ? minVoltage : null;
+    bankData.maxVoltage = numVoltageCells > 0 ? maxVoltage : null;
+    bankData.minTemperature = numTemperatureCells > 0 ? minTemperature : null;
+    bankData.maxTemperature = numTemperatureCells > 0 ? maxTemperature : null;
   }
 
   /// Update pack statistics.
@@ -86,15 +98,32 @@ class CarData {
     double totalTemperature = 0;
     int numVoltageCells = 0;
     int numTemperatureCells = 0;
+    double minVoltage = double.infinity;
+    double maxVoltage = double.negativeInfinity;
+    double minTemperature = double.infinity;
+    double maxTemperature = double.negativeInfinity;
 
     for (BankData bankData in _banks) {
       // Accumulate bank voltage
       totalVoltage += bankData.totalVoltage;
       numVoltageCells += bankData.numVoltageCells;
+      minVoltage = min(minVoltage, bankData.minVoltage ?? double.infinity);
+      maxVoltage = max(
+        maxVoltage,
+        bankData.maxVoltage ?? double.negativeInfinity,
+      );
 
       // Accumulate bank temperature
       totalTemperature += bankData.totalTemperature;
       numTemperatureCells += bankData.numTemperatureCells;
+      minTemperature = min(
+        minTemperature,
+        bankData.minTemperature ?? double.infinity,
+      );
+      maxTemperature = max(
+        maxTemperature,
+        bankData.maxTemperature ?? double.negativeInfinity,
+      );
     }
 
     // Store data
@@ -102,6 +131,10 @@ class CarData {
     packData.totalTemperature = totalTemperature;
     packData.numVoltageCells = numVoltageCells;
     packData.numTemperatureCells = numTemperatureCells;
+    packData.minVoltage = numVoltageCells > 0 ? minVoltage : null;
+    packData.maxVoltage = numVoltageCells > 0 ? maxVoltage : null;
+    packData.minTemperature = numTemperatureCells > 0 ? minTemperature : null;
+    packData.maxTemperature = numTemperatureCells > 0 ? maxTemperature : null;
   }
 
   /// Reset all statistics.
@@ -167,19 +200,35 @@ class BankData {
   double totalTemperature = 0;
   int numVoltageCells = 0;
   int numTemperatureCells = 0;
+  double? minVoltage;
+  double? maxVoltage;
+  double? minTemperature;
+  double? maxTemperature;
 
-  double get averageVoltage => totalVoltage / numVoltageCells;
-
-  double get averageTemperature => totalTemperature / numTemperatureCells;
+  double get _averageVoltage => totalVoltage / numVoltageCells;
+  double get _averageTemperature => totalTemperature / numTemperatureCells;
 
   String get stringOfTotalVoltage =>
-      totalVoltage.toStringAsFixed(Constants.voltageDecimalPrecision);
-
+      _stringOfVoltage(numVoltageCells != 0 ? totalVoltage : null);
   String get stringOfAverageVoltage =>
-      averageVoltage.toStringAsFixed(Constants.voltageDecimalPrecision);
+      _stringOfVoltage(numVoltageCells != 0 ? _averageVoltage : null);
+  String get stringOfAverageTemperature => _stringOfTemperature(
+    numTemperatureCells != 0 ? _averageTemperature : null,
+  );
+  String get stringOfMinVoltage => _stringOfVoltage(minVoltage);
+  String get stringOfMaxVoltage => _stringOfVoltage(maxVoltage);
+  String get stringOfMinTemperature => _stringOfTemperature(minTemperature);
+  String get stringOfMaxTemperature => _stringOfTemperature(maxTemperature);
 
-  String get stringOfAverageTemperature =>
-      averageTemperature.toStringAsFixed(Constants.temperatureDecimalPrecision);
+  String _stringOfVoltage(double? value) => switch (value) {
+    double d => d.toStringAsFixed(Constants.voltageDecimalPrecision),
+    _ => '-',
+  };
+
+  String _stringOfTemperature(double? value) => switch (value) {
+    double d => d.toStringAsFixed(Constants.temperatureDecimalPrecision),
+    _ => '-',
+  };
 }
 
 /// Pack-related statistics.

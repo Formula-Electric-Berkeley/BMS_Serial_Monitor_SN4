@@ -15,7 +15,7 @@ class InfoTableVTStats extends StatefulWidget {
 }
 
 class _InfoTableVTStatsState extends State<InfoTableVTStats> {
-  static const double entryWidth = 180;
+  static const double entryWidth = 120;
   static final PackData packData = globals.carData.packData;
 
   _InfoTableVTStatsState() {
@@ -30,14 +30,29 @@ class _InfoTableVTStatsState extends State<InfoTableVTStats> {
     return InfoTable(
       entries: [
         [
-          InfoTableEntry(text: 'Total Voltage', width: entryWidth),
-          InfoTableEntry(text: 'Avg. Voltage', width: entryWidth),
-          InfoTableEntry(text: 'Avg. Temperature', width: entryWidth),
+          InfoTableEntry(text: 'Statistic', width: entryWidth),
+          InfoTableEntry(text: 'Voltage', width: entryWidth),
+          InfoTableEntry(text: 'Temperature', width: entryWidth),
         ],
         [
-          InfoTableEntry(text: packData.stringOfTotalVoltage),
+          InfoTableEntry(text: 'Minimum'),
+          InfoTableEntry(text: packData.stringOfMinVoltage),
+          InfoTableEntry(text: packData.stringOfMinTemperature),
+        ],
+        [
+          InfoTableEntry(text: 'Maximum'),
+          InfoTableEntry(text: packData.stringOfMaxVoltage),
+          InfoTableEntry(text: packData.stringOfMaxTemperature),
+        ],
+        [
+          InfoTableEntry(text: 'Average'),
           InfoTableEntry(text: packData.stringOfAverageVoltage),
           InfoTableEntry(text: packData.stringOfAverageTemperature),
+        ],
+        [
+          InfoTableEntry(text: 'Total'),
+          InfoTableEntry(text: packData.stringOfTotalVoltage),
+          InfoTableEntry(text: '-'),
         ],
       ],
     );
