@@ -31,10 +31,26 @@ class _InfoTableIVTState extends State<InfoTableIVT> {
     return InfoTable(
       entries: [
         [
-          InfoTableEntry(text: 'I', width: entryWidth),
-          InfoTableEntry(text: 'V1', width: entryWidth),
-          InfoTableEntry(text: 'V2', width: entryWidth),
-          InfoTableEntry(text: 'V3', width: entryWidth),
+          InfoTableEntry(
+            text: 'I',
+            bgColor: InfoTableColors.headerBgColor,
+            width: entryWidth,
+          ),
+          InfoTableEntry(
+            text: 'V1',
+            bgColor: InfoTableColors.headerBgColor,
+            width: entryWidth,
+          ),
+          InfoTableEntry(
+            text: 'V2',
+            bgColor: InfoTableColors.headerBgColor,
+            width: entryWidth,
+          ),
+          InfoTableEntry(
+            text: 'V3',
+            bgColor: InfoTableColors.headerBgColor,
+            width: entryWidth,
+          ),
         ],
         [
           InfoTableEntry(text: ivtData.stringOfCurrent),

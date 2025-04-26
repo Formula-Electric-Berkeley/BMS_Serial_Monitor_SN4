@@ -19,7 +19,7 @@ class InfoTableVT extends StatefulWidget {
 class _InfoTableVTState extends State<InfoTableVT> {
   final List<Color> bankNoBgColor = List.filled(
     Constants.numBanks * 2,
-    InfoTableColors.defaultBgColor,
+    InfoTableColors.headerBgColor,
   );
   final List<Color> cellNoBgColor = List.filled(
     Constants.numCellsPerBank,
@@ -44,7 +44,7 @@ class _InfoTableVTState extends State<InfoTableVT> {
   /// Table header widgets.
   List<Widget> header() {
     return [
-      InfoTableEntry(text: 'Cell No.'),
+      InfoTableEntry(text: 'Cell No.', bgColor: InfoTableColors.headerBgColor),
       ...List.generate(Constants.numBanks * 2, (index) {
         int bank = index ~/ 2 + 1;
         String entryTypeChar = index % 2 == 0 ? 'V' : 'T';
@@ -108,7 +108,7 @@ class _InfoTableVTState extends State<InfoTableVT> {
         }
         if (bankNoBgColor[colIndex] == InfoTableColors.locateBgColor) {
           setState(() {
-            bankNoBgColor[colIndex] = InfoTableColors.defaultBgColor;
+            bankNoBgColor[colIndex] = InfoTableColors.headerBgColor;
           });
         }
       }
@@ -127,7 +127,7 @@ class _InfoTableVTState extends State<InfoTableVT> {
       }
       if (bankNoBgColor[colIndex] == InfoTableColors.locateBgColor) {
         setState(
-          () => bankNoBgColor[colIndex] = InfoTableColors.defaultBgColor,
+          () => bankNoBgColor[colIndex] = InfoTableColors.headerBgColor,
         );
       }
     }

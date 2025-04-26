@@ -30,9 +30,21 @@ class _InfoTableVTStatsState extends State<InfoTableVTStats> {
     return InfoTable(
       entries: [
         [
-          InfoTableEntry(text: 'Statistic', width: entryWidth),
-          InfoTableEntry(text: 'Voltage', width: entryWidth),
-          InfoTableEntry(text: 'Temperature', width: entryWidth),
+          InfoTableEntry(
+            text: 'Statistic',
+            bgColor: InfoTableColors.headerBgColor,
+            width: entryWidth,
+          ),
+          InfoTableEntry(
+            text: 'Voltage',
+            bgColor: InfoTableColors.headerBgColor,
+            width: entryWidth,
+          ),
+          InfoTableEntry(
+            text: 'Temperature',
+            bgColor: InfoTableColors.headerBgColor,
+            width: entryWidth,
+          ),
         ],
         [
           InfoTableEntry(text: 'Minimum'),

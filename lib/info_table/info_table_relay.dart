@@ -37,9 +37,21 @@ class _InfoTableRelayState extends State<InfoTableRelay> {
     return InfoTable(
       entries: [
         [
-          InfoTableEntry(text: 'AIR+', width: entryWidth),
-          InfoTableEntry(text: 'AIR-', width: entryWidth),
-          InfoTableEntry(text: 'Precharge', width: entryWidth),
+          InfoTableEntry(
+            text: 'AIR+',
+            bgColor: InfoTableColors.headerBgColor,
+            width: entryWidth,
+          ),
+          InfoTableEntry(
+            text: 'AIR-',
+            bgColor: InfoTableColors.headerBgColor,
+            width: entryWidth,
+          ),
+          InfoTableEntry(
+            text: 'Precharge',
+            bgColor: InfoTableColors.headerBgColor,
+            width: entryWidth,
+          ),
         ],
         [
           InfoTableEntry(
