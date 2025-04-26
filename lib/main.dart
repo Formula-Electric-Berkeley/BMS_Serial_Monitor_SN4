@@ -34,12 +34,12 @@ class MainApp extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         InfoTableVTStats(),
-                        SizedBox(width:90),
+                        SizedBox(width: 90),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             InfoTableRelay(),
-                            SizedBox(height: 20),
+                            SizedBox(height: 30),
                             InfoTableIVT(),
                           ],
                         ),

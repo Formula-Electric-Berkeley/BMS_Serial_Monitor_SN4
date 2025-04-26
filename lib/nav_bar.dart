@@ -6,8 +6,6 @@ import 'package:serial_monitor/globals.dart' as globals;
 import 'package:serial_monitor/settings/settings.dart';
 
 class NavBar extends StatelessWidget {
-  static const double _buttonWidth = 160;
-
   const NavBar({super.key});
 
   @override
@@ -15,55 +13,56 @@ class NavBar extends StatelessWidget {
     return Container(
       color: Colors.orange,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          // Settings button
-          SizedBox(
-            width: _buttonWidth,
-            child: TextButton.icon(
-              label: Text('Settings'),
-              icon: Icon(Icons.settings),
-              onPressed: showSettings(context),
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.black,
-                shape: RoundedRectangleBorder(),
-              ),
-            ),
-          ),
-
-          // Serial connect button
-          SizedBox(width: _buttonWidth, child: _SerialConnectButton()),
-
-          // Clear data button
-          SizedBox(
-            width: _buttonWidth,
-            child: TextButton.icon(
-              label: Text('Clear Data'),
-              icon: Icon(Icons.clear_sharp),
-              onPressed: globals.carData.clear,
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.black,
-                shape: RoundedRectangleBorder(),
-              ),
-            ),
-          ),
-
-          SizedBox(
-            width: _buttonWidth,
-            child: TextButton.icon(
-              label: Text('Enable All'),
-              icon: Icon(Icons.show_chart),
-              onPressed: globals.carData.enable,
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.black,
-                shape: RoundedRectangleBorder(),
-              ),
-            ),
-          ),
-
-          // Toggle debug mode
-          SizedBox(width: _buttonWidth, child: _DebugModeButton()),
+          Tooltip(message: 'Settings', child: _SettingsButton()),
+          Tooltip(message: 'Serial Connect', child: _SerialConnectButton()),
+          Tooltip(message: 'Enable All VT', child: _EnableVTButton()),
+          Tooltip(message: 'Debug', child: _DebugModeButton()),
+          Tooltip(message: 'Clear Data', child: _ClearDataButton()),
         ],
+      ),
+    );
+  }
+}
+
+class _SettingsButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.settings),
+      onPressed: showSettings(context),
+      style: TextButton.styleFrom(
+        foregroundColor: Colors.black,
+        shape: RoundedRectangleBorder(),
+      ),
+    );
+  }
+}
+
+class _ClearDataButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.clear_sharp),
+      onPressed: globals.carData.clear,
+      style: TextButton.styleFrom(
+        foregroundColor: Colors.black,
+        shape: RoundedRectangleBorder(),
+      ),
+    );
+  }
+}
+
+class _EnableVTButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.show_chart),
+      onPressed: globals.carData.enable,
+      style: TextButton.styleFrom(
+        foregroundColor: Colors.black,
+        shape: RoundedRectangleBorder(),
       ),
     );
   }
@@ -81,8 +80,7 @@ class _SerialConnectButtonState extends State<_SerialConnectButton> {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton.icon(
-      label: connected ? Text('Disconnect') : Text('Connect'),
+    return IconButton(
       icon: Icon(Icons.compare_arrows),
       onPressed: () {
         if (globals.serialMonitor.connected) {
@@ -132,8 +130,7 @@ class _DebugModeButtonState extends State<_DebugModeButton> {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton.icon(
-      label: timer == null ? Text('Enable Debug') : Text('Disable Debug'),
+    return IconButton(
       icon: Icon(Icons.bug_report_outlined),
       onPressed: onPressed,
       style: TextButton.styleFrom(
