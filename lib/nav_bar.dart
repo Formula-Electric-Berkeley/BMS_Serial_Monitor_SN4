@@ -18,7 +18,7 @@ class NavBar extends StatelessWidget {
           Tooltip(message: 'Settings', child: _SettingsButton()),
           Tooltip(message: 'Serial Connect', child: _SerialConnectButton()),
           Tooltip(message: 'Enable All VT', child: _EnableVTButton()),
-          Tooltip(message: 'Debug', child: _DebugModeButton()),
+          Tooltip(message: 'Debug Mode', child: _DebugModeButton()),
           Tooltip(message: 'Clear Data', child: _ClearDataButton()),
         ],
       ),
@@ -93,6 +93,7 @@ class _SerialConnectButtonState extends State<_SerialConnectButton> {
         }
       },
       style: TextButton.styleFrom(
+        backgroundColor: connected ? Colors.deepOrange : null,
         foregroundColor: Colors.black,
         shape: RoundedRectangleBorder(),
       ),
@@ -134,6 +135,7 @@ class _DebugModeButtonState extends State<_DebugModeButton> {
       icon: Icon(Icons.bug_report_outlined),
       onPressed: onPressed,
       style: TextButton.styleFrom(
+        backgroundColor: timer != null ? Colors.deepOrange : null,
         foregroundColor: Colors.black,
         shape: RoundedRectangleBorder(),
       ),
