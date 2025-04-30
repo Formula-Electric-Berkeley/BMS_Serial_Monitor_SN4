@@ -25,12 +25,23 @@ class _InfoTableVTState extends State<InfoTableVT> {
     Constants.numCellsPerBank,
     InfoTableColors.defaultBgColor,
   );
+  Timer? _updateTimer;
 
   _InfoTableVTState() {
-    Timer.periodic(
+    _updateTimer = Timer.periodic(
       Duration(milliseconds: Constants.infoTableRefreshRateMs),
       (_) => setState(() {}),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    Timer? updateTimer = _updateTimer;
+    if (updateTimer != null) {
+      updateTimer.cancel();
+      _updateTimer = null;
+    }
   }
 
   /// Default background color for every bank.

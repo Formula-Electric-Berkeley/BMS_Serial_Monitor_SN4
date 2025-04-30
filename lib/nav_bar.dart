@@ -130,6 +130,16 @@ class _DebugModeButtonState extends State<_DebugModeButton> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    Timer? t = timer;
+    if (t != null) {
+      t.cancel();
+      timer = null;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return IconButton(
       icon: Icon(Icons.bug_report_outlined),

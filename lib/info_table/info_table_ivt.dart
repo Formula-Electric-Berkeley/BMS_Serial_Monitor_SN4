@@ -19,11 +19,23 @@ class _InfoTableIVTState extends State<InfoTableIVT> {
   static const double entryWidth = 90;
   static final IVTData ivtData = globals.carData.ivtData;
 
+  Timer? _updateTimer;
+
   _InfoTableIVTState() {
-    Timer.periodic(
+    _updateTimer = Timer.periodic(
       Duration(milliseconds: Constants.infoTableRefreshRateMs),
       (_) => setState(() {}),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    Timer? updateTimer = _updateTimer;
+    if (updateTimer != null) {
+      updateTimer.cancel();
+      _updateTimer = null;
+    }
   }
 
   @override

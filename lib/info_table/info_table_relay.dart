@@ -19,11 +19,23 @@ class _InfoTableRelayState extends State<InfoTableRelay> {
   static const double entryWidth = 90;
   static final RelayData relayData = globals.carData.relayData;
 
+  Timer? _updateTimer;
+
   _InfoTableRelayState() {
-    Timer.periodic(
+    _updateTimer = Timer.periodic(
       Duration(milliseconds: Constants.infoTableRefreshRateMs),
       (_) => setState(() {}),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    Timer? updateTimer = _updateTimer;
+    if (updateTimer != null) {
+      updateTimer.cancel();
+      _updateTimer = null;
+    }
   }
 
   Color bgColor(bool? isOpen) => switch (isOpen) {
