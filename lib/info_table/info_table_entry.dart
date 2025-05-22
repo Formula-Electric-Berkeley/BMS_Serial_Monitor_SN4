@@ -5,14 +5,14 @@ import 'package:serial_monitor/info_table/info_table.dart';
 abstract final class InfoTableColors {
   // Background colors
   static const Color defaultBgColor = Colors.white;
-  static const Color headerBgColor = Color.fromARGB(255, 209, 209, 209);
+  static const Color headerBgColor = Colors.orangeAccent;
   static const Color bank0BgColor = Color.fromARGB(255, 225, 225, 225);
   static const Color bank1BgColor = Colors.white;
-  static const Color outOfRangeBgColor = Colors.redAccent;
-  static const Color locateBgColor = Colors.orange;
+  static const Color outOfRangeBgColor = Colors.deepOrange;
+  static const Color locateBgColor = Colors.deepOrange;
   static const Color balanceBgColor = Colors.blue;
   static const Color relayOpenBgColor = Colors.lightGreen;
-  static const Color relayClosedBgColor = Colors.redAccent;
+  static const Color relayClosedBgColor = Colors.deepOrange;
 
   // Text colors
   static const Color defaultTextColor = Colors.black;
