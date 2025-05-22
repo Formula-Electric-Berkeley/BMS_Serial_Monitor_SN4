@@ -279,6 +279,7 @@ class IVTData {
   double? _voltage3;
 
   set current(double value) => _current = value;
+  double get current => _current ?? 0;
   set voltage1(double value) => _voltage1 = value;
   set voltage2(double value) => _voltage2 = value;
   set voltage3(double value) => _voltage3 = value;
