@@ -17,99 +17,103 @@ class _InfoTableSettingsState extends State<InfoTableSettings> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                _SettingsCheckbox(
-                  isChecked: useRedundantVoltage,
-                  onChanged: (bool? value) {
-                    if (value != null) {
-                      setState(() => useRedundantVoltage = value);
-                    }
-                  },
-                ),
-                Text('Display redundant voltage'),
-              ],
-            ),
-            Row(
-              children: [
-                _SettingsCheckbox(
-                  isChecked: highlightCellLocation,
-                  onChanged: (bool? value) {
-                    if (value != null) {
-                      setState(() => highlightCellLocation = value);
-                    }
-                  },
-                ),
-                Text('Highlight cell location'),
-              ],
-            ),
-            Row(
-              children: [
-                _SettingsCheckbox(
-                  isChecked: highlightInvalidVoltage,
-                  onChanged: (bool? value) {
-                    if (value != null) {
-                      setState(() => highlightInvalidVoltage = value);
-                    }
-                  },
-                ),
-                Text('Highlight out of range voltage'),
-              ],
-            ),
-            Row(
-              children: [
-                _SettingsCheckbox(
-                  isChecked: highlightInvalidTemperature,
-                  onChanged: (bool? value) {
-                    if (value != null) {
-                      setState(() => highlightInvalidTemperature = value);
-                    }
-                  },
-                ),
-                Text('Highlight out of range temperature'),
-              ],
-            ),
-            Row(
-              children: [
-                _SettingsCheckbox(
-                  isChecked: highlightBalancingCells,
-                  onChanged: (bool? value) {
-                    if (value != null) {
-                      setState(() => highlightBalancingCells = value);
-                    }
-                  },
-                ),
-                Text('Highlight balancing cells'),
-              ],
-            ),
-          ],
-        ),
-
-        // Configure
-        TextButton(
-          onPressed: () {
-            globals.useRedundantVoltage = useRedundantVoltage;
-            globals.highlightCellLocation = highlightCellLocation;
-            globals.highlightInvalidVoltage = highlightInvalidVoltage;
-            globals.highlightInvalidTemperature = highlightInvalidTemperature;
-            globals.highlightBalancingCells = highlightBalancingCells;
-            Navigator.pop(context);
-          },
-          style: TextButton.styleFrom(
-            foregroundColor: Colors.black,
-            backgroundColor: Colors.orange,
-            shape: RoundedRectangleBorder(),
+    return Container(
+      color: Color.fromARGB(255, 245, 245, 245),
+      padding: EdgeInsets.all(10),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  _SettingsCheckbox(
+                    isChecked: useRedundantVoltage,
+                    onChanged: (bool? value) {
+                      if (value != null) {
+                        setState(() => useRedundantVoltage = value);
+                      }
+                    },
+                  ),
+                  Text('Display redundant voltage'),
+                ],
+              ),
+              Row(
+                children: [
+                  _SettingsCheckbox(
+                    isChecked: highlightCellLocation,
+                    onChanged: (bool? value) {
+                      if (value != null) {
+                        setState(() => highlightCellLocation = value);
+                      }
+                    },
+                  ),
+                  Text('Highlight cell location'),
+                ],
+              ),
+              Row(
+                children: [
+                  _SettingsCheckbox(
+                    isChecked: highlightInvalidVoltage,
+                    onChanged: (bool? value) {
+                      if (value != null) {
+                        setState(() => highlightInvalidVoltage = value);
+                      }
+                    },
+                  ),
+                  Text('Highlight out of range voltage'),
+                ],
+              ),
+              Row(
+                children: [
+                  _SettingsCheckbox(
+                    isChecked: highlightInvalidTemperature,
+                    onChanged: (bool? value) {
+                      if (value != null) {
+                        setState(() => highlightInvalidTemperature = value);
+                      }
+                    },
+                  ),
+                  Text('Highlight out of range temperature'),
+                ],
+              ),
+              Row(
+                children: [
+                  _SettingsCheckbox(
+                    isChecked: highlightBalancingCells,
+                    onChanged: (bool? value) {
+                      if (value != null) {
+                        setState(() => highlightBalancingCells = value);
+                      }
+                    },
+                  ),
+                  Text('Highlight balancing cells'),
+                ],
+              ),
+            ],
           ),
-          child: Text('Configure Info Table'),
-        ),
-      ],
+
+          // Configure
+          TextButton(
+            onPressed: () {
+              globals.useRedundantVoltage = useRedundantVoltage;
+              globals.highlightCellLocation = highlightCellLocation;
+              globals.highlightInvalidVoltage = highlightInvalidVoltage;
+              globals.highlightInvalidTemperature = highlightInvalidTemperature;
+              globals.highlightBalancingCells = highlightBalancingCells;
+              Navigator.pop(context);
+            },
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.black,
+              backgroundColor: Colors.orange,
+              shape: RoundedRectangleBorder(),
+            ),
+            child: Text('Configure Info Table'),
+          ),
+        ],
+      ),
     );
   }
 }
