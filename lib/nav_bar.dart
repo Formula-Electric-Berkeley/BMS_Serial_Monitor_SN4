@@ -3,24 +3,81 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:serial_monitor/car_data.dart';
 import 'package:serial_monitor/globals.dart' as globals;
+import 'package:serial_monitor/pages/page_selector.dart';
 import 'package:serial_monitor/settings/settings.dart';
 
 class NavBar extends StatelessWidget {
-  const NavBar({super.key});
+  final PageSelector pageSelector;
+
+  const NavBar({super.key, required this.pageSelector});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.orange,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+      child: Column(
         children: [
-          Tooltip(message: 'Settings', child: _SettingsButton()),
-          Tooltip(message: 'Serial Connect', child: _SerialConnectButton()),
-          Tooltip(message: 'Enable All VT', child: _EnableVTButton()),
-          Tooltip(message: 'Debug Mode', child: _DebugModeButton()),
-          Tooltip(message: 'Clear Data', child: _ClearDataButton()),
+          Row(
+            children: [
+              _PageSelectorButton(
+                text: 'Home',
+                pageSelector: pageSelector,
+                pageOption: PageOptions.home,
+              ),
+              _PageSelectorButton(
+                text: 'Charging',
+                pageSelector: pageSelector,
+                pageOption: PageOptions.charging,
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Tooltip(message: 'Settings', child: _SettingsButton()),
+              Tooltip(message: 'Serial Connect', child: _SerialConnectButton()),
+              Tooltip(message: 'Enable All VT', child: _EnableVTButton()),
+              Tooltip(message: 'Debug Mode', child: _DebugModeButton()),
+              Tooltip(message: 'Clear Data', child: _ClearDataButton()),
+            ],
+          ),
         ],
+      ),
+    );
+  }
+}
+
+class _PageSelectorButton extends StatelessWidget {
+  final String text;
+  final PageSelector pageSelector;
+  final PageOptions pageOption;
+
+  const _PageSelectorButton({
+    required this.text,
+    required this.pageSelector,
+    required this.pageOption,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 20,
+      width: 150,
+      child: ListenableBuilder(
+        listenable: pageSelector,
+        builder:
+            (_, _) => TextButton(
+              style: TextButton.styleFrom(
+                backgroundColor:
+                    pageSelector.currPage == pageOption
+                        ? Colors.deepOrange
+                        : null,
+                foregroundColor: Colors.black,
+                shape: RoundedRectangleBorder(),
+              ),
+              onPressed: () => pageSelector.currPage = pageOption,
+              child: Text(text),
+            ),
       ),
     );
   }

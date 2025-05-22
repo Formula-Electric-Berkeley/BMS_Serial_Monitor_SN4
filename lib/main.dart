@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:serial_monitor/info_table/info_table_ivt.dart';
-import 'package:serial_monitor/info_table/info_table_relay.dart';
-import 'package:serial_monitor/info_table/info_table_vt.dart';
-import 'package:serial_monitor/info_table/info_table_vt_stats.dart';
 import 'package:serial_monitor/nav_bar.dart';
+import 'package:serial_monitor/pages/charging_page.dart';
+import 'package:serial_monitor/pages/home_page.dart';
+import 'package:serial_monitor/pages/page_selector.dart';
 
 void main() {
   runApp(MainApp());
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  final PageSelector pageSelector = PageSelector();
+
+  MainApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,31 +22,17 @@ class MainApp extends StatelessWidget {
       home: Scaffold(
         body: Column(
           children: [
-            NavBar(),
+            NavBar(pageSelector: pageSelector),
             Expanded(
               child: Container(
                 color: Colors.white,
-                child: Column(
-                  children: [
-                    SizedBox(height: 30),
-                    InfoTableVT(),
-                    SizedBox(height: 30),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        InfoTableVTStats(),
-                        SizedBox(width: 90),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            InfoTableRelay(),
-                            SizedBox(height: 30),
-                            InfoTableIVT(),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
+                child: ListenableBuilder(
+                  listenable: pageSelector,
+                  builder:
+                      (_, _) => switch (pageSelector.currPage) {
+                        PageOptions.home => HomePage(),
+                        PageOptions.charging => ChargingPage(),
+                      },
                 ),
               ),
             ),
