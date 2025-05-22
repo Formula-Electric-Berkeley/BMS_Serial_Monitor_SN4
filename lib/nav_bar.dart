@@ -7,9 +7,7 @@ import 'package:serial_monitor/pages/page_selector.dart';
 import 'package:serial_monitor/settings/settings.dart';
 
 class NavBar extends StatelessWidget {
-  final PageSelector pageSelector;
-
-  const NavBar({super.key, required this.pageSelector});
+  const NavBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,14 +17,9 @@ class NavBar extends StatelessWidget {
         children: [
           Row(
             children: [
-              _PageSelectorButton(
-                text: 'Home',
-                pageSelector: pageSelector,
-                pageOption: PageOptions.home,
-              ),
+              _PageSelectorButton(text: 'Home', pageOption: PageOptions.home),
               _PageSelectorButton(
                 text: 'Charging',
-                pageSelector: pageSelector,
                 pageOption: PageOptions.charging,
               ),
             ],
@@ -49,14 +42,9 @@ class NavBar extends StatelessWidget {
 
 class _PageSelectorButton extends StatelessWidget {
   final String text;
-  final PageSelector pageSelector;
   final PageOptions pageOption;
 
-  const _PageSelectorButton({
-    required this.text,
-    required this.pageSelector,
-    required this.pageOption,
-  });
+  const _PageSelectorButton({required this.text, required this.pageOption});
 
   @override
   Widget build(BuildContext context) {
@@ -64,18 +52,18 @@ class _PageSelectorButton extends StatelessWidget {
       height: 20,
       width: 150,
       child: ListenableBuilder(
-        listenable: pageSelector,
+        listenable: globals.pageSelector,
         builder:
             (_, _) => TextButton(
               style: TextButton.styleFrom(
                 backgroundColor:
-                    pageSelector.currPage == pageOption
+                    globals.pageSelector.currPage == pageOption
                         ? Colors.deepOrange
                         : null,
                 foregroundColor: Colors.black,
                 shape: RoundedRectangleBorder(),
               ),
-              onPressed: () => pageSelector.currPage = pageOption,
+              onPressed: () => globals.pageSelector.currPage = pageOption,
               child: Text(text),
             ),
       ),

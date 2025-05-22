@@ -1,5 +1,9 @@
 import 'package:serial_monitor/car_data.dart';
+import 'package:serial_monitor/pages/page_selector.dart';
 import 'package:serial_monitor/serial_monitor.dart';
+
+// Navigation
+PageSelector pageSelector = PageSelector();
 
 // Serial data
 final CarData carData = CarData();

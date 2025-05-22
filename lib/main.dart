@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:serial_monitor/globals.dart' as globals;
 import 'package:serial_monitor/nav_bar.dart';
 import 'package:serial_monitor/pages/charging_page.dart';
 import 'package:serial_monitor/pages/home_page.dart';
@@ -9,9 +10,7 @@ void main() {
 }
 
 class MainApp extends StatelessWidget {
-  final PageSelector pageSelector = PageSelector();
-
-  MainApp({super.key});
+  const MainApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,14 +21,14 @@ class MainApp extends StatelessWidget {
       home: Scaffold(
         body: Column(
           children: [
-            NavBar(pageSelector: pageSelector),
+            NavBar(),
             Expanded(
               child: Container(
                 color: Colors.white,
                 child: ListenableBuilder(
-                  listenable: pageSelector,
+                  listenable: globals.pageSelector,
                   builder:
-                      (_, _) => switch (pageSelector.currPage) {
+                      (_, _) => switch (globals.pageSelector.currPage) {
                         PageOptions.home => HomePage(),
                         PageOptions.charging => ChargingPage(),
                       },
