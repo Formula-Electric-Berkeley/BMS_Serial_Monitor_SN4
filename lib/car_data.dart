@@ -417,11 +417,11 @@ VoidCallback randomizeCarData() {
         chargingData._outputVoltage =
             (r.nextDouble() * 120 * 10).toInt() / 10 + 440;
         chargingData._outputCurrent = (r.nextDouble() * 20 * 10).toInt() / 10;
-        chargingData.hardwareFlag = true;
-        chargingData.temperatureFlag = true;
-        chargingData.inputVoltageFlag = false;
-        chargingData.chargingState = true;
-        chargingData.communicationState = true;
+        chargingData.hardwareFlag = r.nextDouble() > 0.2;
+        chargingData.temperatureFlag = r.nextDouble() > 0.2;
+        chargingData.inputVoltageFlag = r.nextDouble() > 0.8;
+        chargingData.chargingState = r.nextDouble() > 0.2;
+        chargingData.communicationState = r.nextDouble() > 0.2;
       }
     }
   }

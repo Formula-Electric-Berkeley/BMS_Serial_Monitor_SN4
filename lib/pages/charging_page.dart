@@ -9,21 +9,18 @@ class ChargingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      spacing: 50,
+      spacing: 30,
       children: [
         SizedBox(),
         Row(
           spacing: 50,
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            InfoTableChargingRequest(),
-            InfoTableChargingOutput()
-          ],
+          children: [InfoTableChargingRequest(), InfoTableChargingOutput()],
         ),
         InfoTableChargingFlags(),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          spacing: 50,
+          spacing: 90,
           children: [
             SizedBox(
               width: 400,
@@ -45,6 +42,7 @@ class ChargingPage extends StatelessWidget {
             ),
           ],
         ),
+        SizedBox(),
       ],
     );
   }

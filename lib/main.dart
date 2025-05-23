@@ -25,13 +25,16 @@ class MainApp extends StatelessWidget {
             Expanded(
               child: Container(
                 color: Colors.white,
-                child: ListenableBuilder(
-                  listenable: globals.pageSelector,
-                  builder:
-                      (_, _) => switch (globals.pageSelector.currPage) {
-                        PageOptions.home => HomePage(),
-                        PageOptions.charging => ChargingPage(),
-                      },
+                child: SingleChildScrollView(
+                  physics: ClampingScrollPhysics(),
+                  child: ListenableBuilder(
+                    listenable: globals.pageSelector,
+                    builder:
+                        (_, _) => switch (globals.pageSelector.currPage) {
+                          PageOptions.home => HomePage(),
+                          PageOptions.charging => ChargingPage(),
+                        },
+                  ),
                 ),
               ),
             ),

@@ -10,10 +10,10 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      spacing: 30,
       children: [
-        SizedBox(height: 30),
+        SizedBox(),
         InfoTableVT(),
-        SizedBox(height: 30),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -29,6 +29,7 @@ class HomePage extends StatelessWidget {
             ),
           ],
         ),
+        SizedBox(),
       ],
     );
   }
