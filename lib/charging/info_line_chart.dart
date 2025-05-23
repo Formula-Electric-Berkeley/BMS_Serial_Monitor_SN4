@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:math';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -50,8 +51,22 @@ class _InfoLineChartState extends State<InfoLineChart> {
 
   @override
   Widget build(BuildContext context) {
+    double? minY;
+    double? maxY;
+    if (data.isNotEmpty) {
+      Iterable<double> yValues = data.map((spot) => spot.y);
+      minY = yValues.reduce(min);
+      minY -= minY.abs() * 0.1;
+      minY = min(0, minY);
+      maxY = yValues.reduce(max);
+      maxY += maxY.abs() * 0.1;
+      maxY = max(0, maxY);
+    }
     return LineChart(
       LineChartData(
+        minY: minY,
+        maxY: maxY,
+        clipData: FlClipData.all(),
         lineBarsData: [
           LineChartBarData(color: Colors.orange, spots: data.toList()),
         ],
@@ -63,7 +78,6 @@ class _InfoLineChartState extends State<InfoLineChart> {
               showTitles: true,
               minIncluded: false,
               maxIncluded: false,
-              interval: 5,
             ),
           ),
           leftTitles: AxisTitles(
