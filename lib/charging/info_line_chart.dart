@@ -9,12 +9,16 @@ class InfoLineChart extends StatefulWidget {
   final double Function() nextValue;
   final int numSeconds;
   final String yLabel;
+  final BarAreaData? belowBarData;
+  final BarAreaData? aboveBarData;
 
   const InfoLineChart({
     super.key,
     required this.nextValue,
     required this.numSeconds,
     required this.yLabel,
+    this.belowBarData,
+    this.aboveBarData,
   });
 
   @override
@@ -68,7 +72,12 @@ class _InfoLineChartState extends State<InfoLineChart> {
         maxY: maxY,
         clipData: FlClipData.all(),
         lineBarsData: [
-          LineChartBarData(color: Colors.orange, spots: data.toList()),
+          LineChartBarData(
+            color: Colors.orange,
+            spots: data.toList(),
+            belowBarData: widget.belowBarData,
+            aboveBarData: widget.aboveBarData,
+          ),
         ],
         titlesData: FlTitlesData(
           bottomTitles: const AxisTitles(

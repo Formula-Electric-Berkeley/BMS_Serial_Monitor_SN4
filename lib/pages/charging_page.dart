@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:serial_monitor/charging/info_line_chart.dart';
 import 'package:serial_monitor/globals.dart' as globals;
@@ -38,6 +39,18 @@ class ChargingPage extends StatelessWidget {
                 nextValue: () => globals.carData.ivtData.current,
                 numSeconds: 30,
                 yLabel: 'Total Current / A',
+                belowBarData: BarAreaData(
+                  show: true,
+                  color: Colors.deepOrangeAccent,
+                  cutOffY: 0,
+                  applyCutOffY: true,
+                ),
+                aboveBarData: BarAreaData(
+                  show: true,
+                  color: Colors.lightGreenAccent,
+                  cutOffY: 0,
+                  applyCutOffY: true,
+                ),
               ),
             ),
           ],

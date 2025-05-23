@@ -403,7 +403,7 @@ VoidCallback randomizeCarData() {
 
         // IVT data
         IVTData ivtData = carData.ivtData;
-        ivtData._current = r.nextDouble() * 80 - 20;
+        ivtData._current = r.nextDouble() * 40 - 20;
         ivtData._voltage1 = r.nextDouble();
         ivtData._voltage2 = r.nextDouble();
         ivtData._voltage3 = r.nextDouble();
