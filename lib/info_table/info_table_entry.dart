@@ -13,6 +13,8 @@ abstract final class InfoTableColors {
   static const Color balanceBgColor = Colors.blue;
   static const Color relayOpenBgColor = Colors.lightGreen;
   static const Color relayClosedBgColor = Colors.deepOrange;
+  static const Color chargingNormalBgColor = Colors.lightGreen;
+  static const Color chargingFaultBgColor = Colors.deepOrange;
 
   // Text colors
   static const Color defaultTextColor = Colors.black;

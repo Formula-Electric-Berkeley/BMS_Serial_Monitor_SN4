@@ -27,6 +27,9 @@ class CarData {
   /// IVT voltage and current data.
   final IVTData ivtData = IVTData();
 
+  /// Charger data.
+  final ChargingData chargingData = ChargingData();
+
   CarData() {
     Timer.periodic(Duration(milliseconds: 100), _update);
   }
@@ -144,6 +147,7 @@ class CarData {
     }
     relayData.clear();
     ivtData.clear();
+    chargingData.clear();
   }
 
   /// Enable all cell voltage and temperature readings.
@@ -297,9 +301,78 @@ class IVTData {
   }
 
   String _stringOfDouble(double? value) =>
-      (value != null)
+      value != null
           ? value.toStringAsFixed(Constants.voltageDecimalPrecision)
           : '-';
+}
+
+class ChargingData {
+  // BMS to Charger
+  double? _maxVoltage;
+  double? _maxCurrent;
+  bool? controlFlag;
+
+  // Charger to BMS (output)
+  double? _outputVoltage;
+  double? _outputCurrent;
+
+  // Charger to BMS (status flags)
+  bool? hardwareFlag;
+  bool? temperatureFlag;
+  bool? inputVoltageFlag;
+  bool? chargingState;
+  bool? communicationState;
+
+  String get maxVoltage => _stringOfValue(_maxVoltage);
+  String get maxCurrent => _stringOfValue(_maxCurrent);
+  String get controlDescription => switch (controlFlag) {
+    false => 'Charge',
+    true => 'Standby',
+    _ => '-',
+  };
+  String get outputVoltage => _stringOfValue(_outputVoltage);
+  String get outputCurrent => _stringOfValue(_outputCurrent);
+  String get hardwareDescription => switch (hardwareFlag) {
+    false => 'Normal',
+    true => 'Hardware Failure',
+    _ => '-',
+  };
+  String get temperatureDescription => switch (temperatureFlag) {
+    false => 'Normal',
+    true => 'Over Temperature Protection',
+    _ => '-',
+  };
+  String get inputVoltageDescription => switch (inputVoltageFlag) {
+    false => 'Normal',
+    true => 'Fault',
+    _ => '-',
+  };
+  String get chargingStateDescription => switch (chargingState) {
+    false => 'Normal',
+    true => 'Closed (Prevent Reverse Polarity)',
+    _ => '-',
+  };
+  String get communicationStateDescription => switch (communicationState) {
+    false => 'Normal',
+    true => 'Timeout',
+    _ => '-',
+  };
+
+  void clear() {
+    _maxVoltage = null;
+    _maxCurrent = null;
+    controlFlag = null;
+    _outputVoltage = null;
+    _outputCurrent = null;
+    hardwareFlag = null;
+    temperatureFlag = null;
+    inputVoltageFlag = null;
+    chargingState = null;
+    communicationState = null;
+  }
+
+  String _stringOfValue(dynamic value) =>
+      value != null ? value.toString() : '-';
 }
 
 /// Randomize global [CarData] struct.
@@ -330,10 +403,25 @@ VoidCallback randomizeCarData() {
 
         // IVT data
         IVTData ivtData = carData.ivtData;
-        ivtData._current = r.nextDouble() * 2 - 1;
+        ivtData._current = r.nextDouble() * 80 - 20;
         ivtData._voltage1 = r.nextDouble();
         ivtData._voltage2 = r.nextDouble();
         ivtData._voltage3 = r.nextDouble();
+
+        // Charger data
+        ChargingData chargingData = carData.chargingData;
+        chargingData._maxVoltage =
+            (r.nextDouble() * 120 * 10).toInt() / 10 + 440;
+        chargingData._maxCurrent = (r.nextDouble() * 20 * 10).toInt() / 10;
+        chargingData.controlFlag = r.nextDouble() > 0.5;
+        chargingData._outputVoltage =
+            (r.nextDouble() * 120 * 10).toInt() / 10 + 440;
+        chargingData._outputCurrent = (r.nextDouble() * 20 * 10).toInt() / 10;
+        chargingData.hardwareFlag = true;
+        chargingData.temperatureFlag = true;
+        chargingData.inputVoltageFlag = false;
+        chargingData.chargingState = true;
+        chargingData.communicationState = true;
       }
     }
   }
