@@ -17,6 +17,8 @@ abstract final class Constants {
   static const String cellDataSerialId = 'cell';
   static const String relayDataSerialId = 'relay';
   static const String ivtDataSerialId = 'ivt';
+  static const String chargerData1SerialId = 'charger1';
+  static const String chargerData2SerialId = 'charger2';
 
   // Info table
   static const int infoTableRefreshRateMs = 50;

@@ -336,15 +336,20 @@ class ChargingData {
   bool? chargingState;
   bool? communicationState;
 
-  String get maxVoltage => _stringOfValue(_maxVoltage);
-  String get maxCurrent => _stringOfValue(_maxCurrent);
+  set maxVoltage(double value) => _maxVoltage = value;
+  set maxCurrent(double value) => _maxCurrent = value;
+  set outputVoltage(double value) => _outputVoltage = value;
+  set outputCurrent(double value) => _outputCurrent = value;
+
+  String get stringOfMaxVoltage => _stringOfValue(_maxVoltage);
+  String get stringOfMaxCurrent => _stringOfValue(_maxCurrent);
   String get controlDescription => switch (controlFlag) {
     false => 'Charge',
     true => 'Standby',
     _ => '-',
   };
-  String get outputVoltage => _stringOfValue(_outputVoltage);
-  String get outputCurrent => _stringOfValue(_outputCurrent);
+  String get stringOfOutputVoltage => _stringOfValue(_outputVoltage);
+  String get stringOfOutputCurrent => _stringOfValue(_outputCurrent);
   String get hardwareDescription => switch (hardwareFlag) {
     false => 'Normal',
     true => 'Hardware Failure',

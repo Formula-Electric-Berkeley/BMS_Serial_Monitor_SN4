@@ -147,6 +147,10 @@ class SerialMonitor {
       case Constants.ivtDataSerialId:
         _storeIVTData(splitted);
         break;
+      case Constants.chargerData1SerialId:
+        _storeChargerData1(splitted);
+      case Constants.chargerData2SerialId:
+        _storeChargerData2(splitted);
       default:
     }
   }
@@ -211,7 +215,7 @@ class SerialMonitor {
   void _storeIVTData(List<String> data) {
     // Format: IVT i v1 v2 v3
     if (data.length != 5) return;
-    
+
     // Current
     double? current = double.tryParse(data[1]);
     if (current == null) return;
@@ -234,5 +238,53 @@ class SerialMonitor {
     ivtData.voltage1 = voltage1;
     ivtData.voltage2 = voltage2;
     ivtData.voltage3 = voltage3;
+  }
+
+  void _storeChargerData1(List<String> data) {
+    if (data.length != 4) return;
+
+    // Max voltage
+    int? maxVoltage100mV = int.tryParse(data[1]);
+    if (maxVoltage100mV == null) return;
+
+    // Max current
+    int? maxCurrent100mV = int.tryParse(data[2]);
+    if (maxCurrent100mV == null) return;
+
+    // Control (0 or 1)
+    int? control = int.tryParse(data[3]);
+    if (control == null || (control != 0 && control != 1)) return;
+
+    // Store data
+    ChargingData chargingData = _carData.chargingData;
+    chargingData.maxVoltage = maxVoltage100mV / 10.0;
+    chargingData.maxCurrent = maxCurrent100mV / 10.0;
+    chargingData.controlFlag = control == 1;
+  }
+
+  void _storeChargerData2(List<String> data) {
+    if (data.length != 4) return;
+
+    // Output voltage
+    int? outputVoltage100mV = int.tryParse(data[1]);
+    if (outputVoltage100mV == null) return;
+
+    // Output current
+    int? outputCurrent100mV = int.tryParse(data[2]);
+    if (outputCurrent100mV == null) return;
+
+    // Status flags
+    int? statusFlags = int.tryParse(data[3]);
+    if (statusFlags == null) return;
+
+    // Store data
+    ChargingData chargingData = _carData.chargingData;
+    chargingData.outputVoltage = outputVoltage100mV / 10.0;
+    chargingData.outputCurrent = outputCurrent100mV / 10.0;
+    chargingData.hardwareFlag = statusFlags & 1 == 1;
+    chargingData.temperatureFlag = statusFlags & 2 == 1;
+    chargingData.inputVoltageFlag = statusFlags & 4 == 1;
+    chargingData.chargingState = statusFlags % 8 == 1;
+    chargingData.communicationState = statusFlags & 16 == 1;
   }
 }

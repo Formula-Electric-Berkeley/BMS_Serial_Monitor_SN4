@@ -60,8 +60,8 @@ class _InfoTableChargingRequestState extends State<InfoTableChargingRequest> {
           ),
         ],
         [
-          InfoTableEntry(text: chargingData.maxVoltage),
-          InfoTableEntry(text: chargingData.maxCurrent),
+          InfoTableEntry(text: chargingData.stringOfMaxVoltage),
+          InfoTableEntry(text: chargingData.stringOfMaxCurrent),
           InfoTableEntry(
             text: chargingData.controlDescription,
             bgColor: switch (chargingData.controlFlag) {
@@ -124,8 +124,8 @@ class _InfoTableChargingOutputState extends State<InfoTableChargingOutput> {
           ),
         ],
         [
-          InfoTableEntry(text: chargingData.outputVoltage),
-          InfoTableEntry(text: chargingData.outputCurrent),
+          InfoTableEntry(text: chargingData.stringOfOutputVoltage),
+          InfoTableEntry(text: chargingData.stringOfOutputCurrent),
         ],
       ],
     );
