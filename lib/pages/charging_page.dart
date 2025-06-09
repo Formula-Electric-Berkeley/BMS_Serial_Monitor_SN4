@@ -27,8 +27,7 @@ class ChargingPage extends StatelessWidget {
               width: 400,
               height: 400,
               child: InfoLineChart(
-                nextValue: () => globals.carData.packData.totalVoltage,
-                numSeconds: 30,
+                timeSeriesData: globals.carData.totalVoltageTimeSeries,
                 yLabel: 'Total Voltage / V',
               ),
             ),
@@ -36,8 +35,7 @@ class ChargingPage extends StatelessWidget {
               width: 400,
               height: 400,
               child: InfoLineChart(
-                nextValue: () => globals.carData.ivtData.current,
-                numSeconds: 30,
+                timeSeriesData: globals.carData.currentTimeSeries,
                 yLabel: 'Total Current / A',
                 belowBarData: BarAreaData(
                   show: true,

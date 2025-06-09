@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
+import 'package:serial_monitor/charging/info_time_series.dart';
 import 'package:serial_monitor/constants.dart';
 import 'package:serial_monitor/globals.dart' as globals;
 
@@ -30,8 +31,18 @@ class CarData {
   /// Charger data.
   final ChargingData chargingData = ChargingData();
 
+  /// Time series data for total voltage of pack.
+  late InfoTimeSeries totalVoltageTimeSeries;
+
+  /// Time series data for current of pack.
+  late InfoTimeSeries currentTimeSeries;
+
   CarData() {
     Timer.periodic(Duration(milliseconds: 100), _update);
+    totalVoltageTimeSeries = InfoTimeSeries(
+      nextValue: () => packData.totalVoltage,
+    );
+    currentTimeSeries = InfoTimeSeries(nextValue: () => ivtData.current);
   }
 
   /// Get cell statistics.
@@ -148,6 +159,8 @@ class CarData {
     relayData.clear();
     ivtData.clear();
     chargingData.clear();
+    totalVoltageTimeSeries.clear();
+    currentTimeSeries.clear();
   }
 
   /// Enable all cell voltage and temperature readings.

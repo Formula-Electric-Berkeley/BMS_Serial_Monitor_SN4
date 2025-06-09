@@ -1,21 +1,19 @@
 import 'dart:async';
-import 'dart:collection';
 import 'dart:math';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:serial_monitor/charging/info_time_series.dart';
 
 class InfoLineChart extends StatefulWidget {
-  final double Function() nextValue;
-  final int numSeconds;
+  final InfoTimeSeries timeSeriesData;
   final String yLabel;
   final BarAreaData? belowBarData;
   final BarAreaData? aboveBarData;
 
   const InfoLineChart({
     super.key,
-    required this.nextValue,
-    required this.numSeconds,
+    required this.timeSeriesData,
     required this.yLabel,
     this.belowBarData,
     this.aboveBarData,
@@ -26,20 +24,11 @@ class InfoLineChart extends StatefulWidget {
 }
 
 class _InfoLineChartState extends State<InfoLineChart> {
-  final Queue<FlSpot> data = Queue();
-  double currTime = 0;
   Timer? _updateTimer;
 
   _InfoLineChartState() {
     _updateTimer = Timer.periodic(Duration(seconds: 1), (_) {
-      currTime++;
-      double currValue = widget.nextValue();
-      setState(() {
-        data.addLast(FlSpot(currTime, currValue));
-        if (data.length > widget.numSeconds) {
-          data.removeFirst();
-        }
-      });
+      setState(() {});
     });
   }
 
@@ -55,6 +44,7 @@ class _InfoLineChartState extends State<InfoLineChart> {
 
   @override
   Widget build(BuildContext context) {
+    List<FlSpot> data = _buildData;
     double? minY;
     double? maxY;
     if (data.isNotEmpty) {
@@ -74,7 +64,7 @@ class _InfoLineChartState extends State<InfoLineChart> {
         lineBarsData: [
           LineChartBarData(
             color: Colors.orange,
-            spots: data.toList(),
+            spots: data,
             belowBarData: widget.belowBarData,
             aboveBarData: widget.aboveBarData,
           ),
@@ -108,4 +98,7 @@ class _InfoLineChartState extends State<InfoLineChart> {
       ),
     );
   }
+
+  List<FlSpot> get _buildData =>
+      widget.timeSeriesData.data.map((e) => FlSpot(e.time, e.value)).toList();
 }
